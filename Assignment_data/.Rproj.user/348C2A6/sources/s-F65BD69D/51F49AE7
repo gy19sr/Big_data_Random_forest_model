@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1584373197730.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3439476394",
+    "id" : "51F49AE7",
+    "lastKnownWriteTime" : 1584910935,
+    "last_content_update" : 1584910935784,
+    "path" : "C:/Users/stuar/OneDrive/Documents/Research_and_Innovation/query/quiries.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "1014,0",
+        "scrollLine" : "991"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,1018 @@
+rm(list = ls()) #clear work space
+library(tidyverse)
+library(sf)
+library(tmap)
+library(GISTools)
+library(rgdal)
+library(sp)
+library(RColorBrewer)
+library(reshape2)
+library(rpart)
+library(rpart.plot)
+library(visNetwork)
+library(caret)
+library(randomForest)
+library(ranger)
+library(sparkline)
+
+rm(list = ls()) #clear work space
+
+?dplyr
+listings = as_tibble(read.csv("querydata_r.csv", stringsAsFactors = F))
+str(listings)
+
+###Arts and Humanities
+
+#USA
+all_USA = listings[listings$country1 == "United States"|listings$country2 == "United States"|listings$country3 == "United States" |listings$country4 == "United States" |listings$country5 == "United States" 
+                |listings$country6 == "United States" |listings$country7 == "United States" |listings$country8 == "United States" |listings$country9 == "United States",] 
+
+Arts_USA = all_USA[all_USA$ASJC.B2 == "Arts and Humanities"| all_USA$ASJC.C2 == "Arts and Humanities"| all_USA$ASJC.D2 == "Arts and Humanities" | all_USA$ASJC.E2 == "Arts and Humanities" 
+                   | all_USA$ASJC.F2 == "Arts and Humanities" | all_USA$ASJC.G2 == "Arts and Humanities" | all_USA$ASJC.H2 == "Arts and Humanities" | all_USA$ASJC.I2 == "Arts and Humanities" 
+                   | all_USA$ASJC.J2 == "Arts and Humanities"| all_USA$ASJC.K2 == "Arts and Humanities" | all_USA$ASJC.L2 == "Arts and Humanities" | all_USA$ASJC.M2 == "Arts and Humanities"
+                   | all_USA$ASJC.N2 == "Arts and Humanities",]
+
+write.csv(Arts_USA, file = "Arts_USA.csv",)
+
+
+#Australia
+all_AUS = listings[listings$country1 == "Australia"|listings$country2 == "Australia"|listings$country3 == "Australia" |listings$country4 == "Australia" |listings$country5 == "Australia" 
+                   |listings$country6 == "Australia" |listings$country7 == "Australia" |listings$country8 == "Australia" |listings$country9 == "Australia",] 
+
+Arts_AUS = all_AUS[all_AUS$ASJC.B2 == "Arts and Humanities"| all_AUS$ASJC.C2 == "Arts and Humanities"| all_AUS$ASJC.D2 == "Arts and Humanities" | all_AUS$ASJC.E2 == "Arts and Humanities" 
+                   | all_AUS$ASJC.F2 == "Arts and Humanities" | all_AUS$ASJC.G2 == "Arts and Humanities" | all_AUS$ASJC.H2 == "Arts and Humanities" | all_AUS$ASJC.I2 == "Arts and Humanities" 
+                   | all_AUS$ASJC.J2 == "Arts and Humanities"| all_AUS$ASJC.K2 == "Arts and Humanities" | all_AUS$ASJC.L2 == "Arts and Humanities" | all_AUS$ASJC.M2 == "Arts and Humanities"
+                   | all_AUS$ASJC.N2 == "Arts and Humanities",]
+
+write.csv(Arts_AUS, file = "Arts_AUS.csv",)
+
+
+#Germany
+All_GER = listings[listings$country1 == "Germany"|listings$country2 == "Germany"|listings$country3 == "Germany" |listings$country4 == "Germany" |listings$country5 == "Germany" 
+                  |listings$country6 == "Germany" |listings$country7 == "Germany" |listings$country8 == "Germany" |listings$country9 == "Germany",] 
+
+Arts_GER = All_GER[All_GER$ASJC.B2 == "Arts and Humanities"| All_GER$ASJC.C2 == "Arts and Humanities"| All_GER$ASJC.D2 == "Arts and Humanities" | All_GER$ASJC.E2 == "Arts and Humanities" 
+                   | All_GER$ASJC.F2 == "Arts and Humanities" | All_GER$ASJC.G2 == "Arts and Humanities" | All_GER$ASJC.H2 == "Arts and Humanities" | All_GER$ASJC.I2 == "Arts and Humanities" 
+                   | All_GER$ASJC.J2 == "Arts and Humanities"| All_GER$ASJC.K2 == "Arts and Humanities" | All_GER$ASJC.L2 == "Arts and Humanities" | All_GER$ASJC.M2 == "Arts and Humanities"
+                   | All_GER$ASJC.N2 == "Arts and Humanities",]
+write.csv(Arts_GER, file = "Arts_GER.csv",)
+
+
+#China
+All_CHI = listings[listings$country1 == "China"|listings$country2 == "China"|listings$country3 == "China" |listings$country4 == "China" |listings$country5 == "China" 
+                   |listings$country6 == "China" |listings$country7 == "China" |listings$country8 == "China" |listings$country9 == "China",] 
+
+Arts_CHI = All_CHI[All_CHI$ASJC.B2 == "Arts and Humanities"| All_CHI$ASJC.C2 == "Arts and Humanities"| All_CHI$ASJC.D2 == "Arts and Humanities" | All_CHI$ASJC.E2 == "Arts and Humanities" 
+                   | All_CHI$ASJC.F2 == "Arts and Humanities" | All_CHI$ASJC.G2 == "Arts and Humanities" | All_CHI$ASJC.H2 == "Arts and Humanities" | All_CHI$ASJC.I2 == "Arts and Humanities" 
+                   | All_CHI$ASJC.J2 == "Arts and Humanities"| All_CHI$ASJC.K2 == "Arts and Humanities" | All_CHI$ASJC.L2 == "Arts and Humanities" | All_CHI$ASJC.M2 == "Arts and Humanities"
+                   | All_CHI$ASJC.N2 == "Arts and Humanities",]
+write.csv(Arts_CHI, file = "Arts_CHI.csv",)
+
+#France 
+All_FRA = listings[listings$country1 == "France"|listings$country2 == "France"|listings$country3 == "France" |listings$country4 == "France" |listings$country5 == "France" 
+                   |listings$country6 == "France" |listings$country7 == "France" |listings$country8 == "France" |listings$country9 == "France",] 
+
+Arts_FRA = All_FRA[All_FRA$ASJC.B2 == "Arts and Humanities"| All_FRA$ASJC.C2 == "Arts and Humanities"| All_FRA$ASJC.D2 == "Arts and Humanities" | All_FRA$ASJC.E2 == "Arts and Humanities" 
+                   | All_FRA$ASJC.F2 == "Arts and Humanities" | All_FRA$ASJC.G2 == "Arts and Humanities" | All_FRA$ASJC.H2 == "Arts and Humanities" | All_FRA$ASJC.I2 == "Arts and Humanities" 
+                   | All_FRA$ASJC.J2 == "Arts and Humanities"| All_FRA$ASJC.K2 == "Arts and Humanities" | All_FRA$ASJC.L2 == "Arts and Humanities" | All_FRA$ASJC.M2 == "Arts and Humanities"
+                   | All_FRA$ASJC.N2 == "Arts and Humanities",]
+write.csv(Arts_FRA, file = "Arts_FRA.csv",)
+
+
+#Canada
+All_CAD = listings[listings$country1 == "Canada"|listings$country2 == "Canada"|listings$country3 == "Canada" |listings$country4 == "Canada" |listings$country5 == "Canada" 
+                   |listings$country6 == "Canada" |listings$country7 == "Canada" |listings$country8 == "Canada" |listings$country9 == "Canada",] 
+
+Arts_CAD = All_CAD[All_CAD$ASJC.B2 == "Arts and Humanities"| All_CAD$ASJC.C2 == "Arts and Humanities"| All_CAD$ASJC.D2 == "Arts and Humanities" | All_CAD$ASJC.E2 == "Arts and Humanities" 
+                   | All_CAD$ASJC.F2 == "Arts and Humanities" | All_CAD$ASJC.G2 == "Arts and Humanities" | All_CAD$ASJC.H2 == "Arts and Humanities" | All_CAD$ASJC.I2 == "Arts and Humanities" 
+                   | All_CAD$ASJC.J2 == "Arts and Humanities"| All_CAD$ASJC.K2 == "Arts and Humanities" | All_CAD$ASJC.L2 == "Arts and Humanities" | All_CAD$ASJC.M2 == "Arts and Humanities"
+                   | All_CAD$ASJC.N2 == "Arts and Humanities",]
+write.csv(Arts_CAD, file = "Arts_CAD.csv",)
+
+
+#Italy
+
+All_ITA = listings[listings$country1 == "Italy"|listings$country2 == "Italy"|listings$country3 == "Italy" |listings$country4 == "Italy" |listings$country5 == "Italy" 
+                   |listings$country6 == "Italy" |listings$country7 == "Italy" |listings$country8 == "Italy" |listings$country9 == "Italy",] 
+
+Arts_ITA = All_ITA[All_ITA$ASJC.B2 == "Arts and Humanities"| All_ITA$ASJC.C2 == "Arts and Humanities"| All_ITA$ASJC.D2 == "Arts and Humanities" | All_ITA$ASJC.E2 == "Arts and Humanities" 
+                   | All_ITA$ASJC.F2 == "Arts and Humanities" | All_ITA$ASJC.G2 == "Arts and Humanities" | All_ITA$ASJC.H2 == "Arts and Humanities" | All_ITA$ASJC.I2 == "Arts and Humanities" 
+                   | All_ITA$ASJC.J2 == "Arts and Humanities"| All_ITA$ASJC.K2 == "Arts and Humanities" | All_ITA$ASJC.L2 == "Arts and Humanities" | All_ITA$ASJC.M2 == "Arts and Humanities"
+                   | All_ITA$ASJC.N2 == "Arts and Humanities",]
+write.csv(Arts_ITA, file = "Arts_ITA.csv",)
+
+
+
+
+### Arts Institutes 
+#Sydney
+All_Arts = listings[listings$ASJC.B2 == "Arts and Humanities"| listings$ASJC.C2 == "Arts and Humanities"| listings$ASJC.D2 == "Arts and Humanities" | listings$ASJC.E2 == "Arts and Humanities" 
+                       | listings$ASJC.F2 == "Arts and Humanities" | listings$ASJC.G2 == "Arts and Humanities" | listings$ASJC.H2 == "Arts and Humanities" | listings$ASJC.I2 == "Arts and Humanities" 
+                       | listings$ASJC.J2 == "Arts and Humanities"| listings$ASJC.K2 == "Arts and Humanities" | listings$ASJC.L2 == "Arts and Humanities" | listings$ASJC.M2 == "Arts and Humanities"
+                       | listings$ASJC.N2 == "Arts and Humanities",]
+SYD_Arts = All_Arts[All_Arts$Institutions.1 == "University of Sydney" | All_Arts$Institutions.2 == "University of Sydney" | All_Arts$Institutions.3 == "University of Sydney" | All_Arts$Institutions.3.1 == "University of Sydney" |
+                      All_Arts$Institutions.4 == "University of Sydney" | All_Arts$Institutions.5 == "University of Sydney" | All_Arts$Institutions.6 == "University of Sydney" | All_Arts$Institutions.7 == "University of Sydney"
+                    | All_Arts$Institutions.8 == "University of Sydney" | All_Arts$Institutions.9 == "University of Sydney" | All_Arts$Institutions.10 == "University of Sydney" | All_Arts$Institutions.11 == "University of Sydney"
+                    | All_Arts$Institutions.12 == "University of Sydney" | All_Arts$Institutions.13 == "University of Sydney" | All_Arts$Institutions.14 == "University of Sydney" | All_Arts$Institutions.15 == "University of Sydney"
+                    | All_Arts$Institutions.16 == "University of Sydney" | All_Arts$Institutions.17 == "University of Sydney" | All_Arts$Institutions.18 == "University of Sydney" ,]
+write.csv(SYD_Arts, file = "SYD_Arts.csv",)
+
+#CNRS
+
+CNRS_Arts = All_Arts[All_Arts$Institutions.1 == "CNRS" | All_Arts$Institutions.2 == "CNRS" | All_Arts$Institutions.3 == "CNRS" | All_Arts$Institutions.3.1 == "CNRS" |
+                      All_Arts$Institutions.4 == "CNRS" | All_Arts$Institutions.5 == "CNRS" | All_Arts$Institutions.6 == "CNRS" | All_Arts$Institutions.7 == "CNRS"
+                    | All_Arts$Institutions.8 == "CNRS" | All_Arts$Institutions.9 == "CNRS" | All_Arts$Institutions.10 == "CNRS" | All_Arts$Institutions.11 == "CNRS"
+                    | All_Arts$Institutions.12 == "CNRS" | All_Arts$Institutions.13 == "CNRS" | All_Arts$Institutions.14 == "CNRS" | All_Arts$Institutions.15 == "CNRS"
+                    | All_Arts$Institutions.16 == "CNRS" | All_Arts$Institutions.17 == "CNRS" | All_Arts$Institutions.18 == "CNRS" ,]
+write.csv(CNRS_Arts, file = "CNRS_Arts.csv",)
+
+#Michigan State University 
+
+Mich_Arts = All_Arts[All_Arts$Institutions.1 == "Michigan State University" | All_Arts$Institutions.2 == "Michigan State University" | All_Arts$Institutions.3 == "Michigan State University" | All_Arts$Institutions.3.1 == "Michigan State University" |
+                       All_Arts$Institutions.4 == "Michigan State University" | All_Arts$Institutions.5 == "Michigan State University" | All_Arts$Institutions.6 == "Michigan State University" | All_Arts$Institutions.7 == "Michigan State University"
+                     | All_Arts$Institutions.8 == "Michigan State University" | All_Arts$Institutions.9 == "Michigan State University" | All_Arts$Institutions.10 == "Michigan State University" | All_Arts$Institutions.11 == "Michigan State University"
+                     | All_Arts$Institutions.12 == "Michigan State University" | All_Arts$Institutions.13 == "Michigan State University" | All_Arts$Institutions.14 == "Michigan State University" | All_Arts$Institutions.15 == "Michigan State University"
+                     | All_Arts$Institutions.16 == "Michigan State University" | All_Arts$Institutions.17 == "Michigan State University" | All_Arts$Institutions.18 == "Michigan State University" ,]
+write.csv(Mich_Arts, file = "Mich_Arts.csv",)
+
+#Vienna University of Technology 
+Vienna_Arts = All_Arts[All_Arts$Institutions.1 == "Vienna University of Technology" | All_Arts$Institutions.2 == "Vienna University of Technology" | All_Arts$Institutions.3 == "Vienna University of Technology" | All_Arts$Institutions.3.1 == "Vienna University of Technology" |
+                       All_Arts$Institutions.4 == "Vienna University of Technology" | All_Arts$Institutions.5 == "Vienna University of Technology" | All_Arts$Institutions.6 == "Vienna University of Technology" | All_Arts$Institutions.7 == "Vienna University of Technology"
+                     | All_Arts$Institutions.8 == "Vienna University of Technology" | All_Arts$Institutions.9 == "Vienna University of Technology" | All_Arts$Institutions.10 == "Vienna University of Technology" | All_Arts$Institutions.11 == "Vienna University of Technology"
+                     | All_Arts$Institutions.12 == "Vienna University of Technology" | All_Arts$Institutions.13 == "Vienna University of Technology" | All_Arts$Institutions.14 == "Vienna University of Technology" | All_Arts$Institutions.15 == "Vienna University of Technology"
+                     | All_Arts$Institutions.16 == "Vienna University of Technology" | All_Arts$Institutions.17 == "Vienna University of Technology" | All_Arts$Institutions.18 == "Vienna University of Technology" ,]
+write.csv(Vienna_Arts, file = "Vienna_Arts.csv",)
+
+#University of Granada
+
+Grenada_Arts = All_Arts[All_Arts$Institutions.1 == "University of Granada" | All_Arts$Institutions.2 == "University of Granada" | All_Arts$Institutions.3 == "University of Granada" | All_Arts$Institutions.3.1 == "University of Granada" |
+                         All_Arts$Institutions.4 == "University of Granada" | All_Arts$Institutions.5 == "University of Granada" | All_Arts$Institutions.6 == "University of Granada" | All_Arts$Institutions.7 == "University of Granada"
+                       | All_Arts$Institutions.8 == "University of Granada" | All_Arts$Institutions.9 == "University of Granada" | All_Arts$Institutions.10 == "University of Granada" | All_Arts$Institutions.11 == "University of Granada"
+                       | All_Arts$Institutions.12 == "University of Granada" | All_Arts$Institutions.13 == "University of Granada" | All_Arts$Institutions.14 == "University of Granada" | All_Arts$Institutions.15 == "University of Granada"
+                       | All_Arts$Institutions.16 == "University of Granada" | All_Arts$Institutions.17 == "University of Granada" | All_Arts$Institutions.18 == "University of Granada" ,]
+write.csv(Grenada_Arts, file = "Granada_Arts.csv",)
+
+#University of Gothenburg
+
+Gothenburg_Arts = All_Arts[All_Arts$Institutions.1 == "University of Gothenburg" | All_Arts$Institutions.2 == "University of Gothenburg" | All_Arts$Institutions.3 == "University of Gothenburg" | All_Arts$Institutions.3.1 == "University of Gothenburg" |
+                          All_Arts$Institutions.4 == "University of Gothenburg" | All_Arts$Institutions.5 == "University of Gothenburg" | All_Arts$Institutions.6 == "University of Gothenburg" | All_Arts$Institutions.7 == "University of Gothenburg"
+                        | All_Arts$Institutions.8 == "University of Gothenburg" | All_Arts$Institutions.9 == "University of Gothenburg" | All_Arts$Institutions.10 == "University of Gothenburg" | All_Arts$Institutions.11 == "University of Gothenburg"
+                        | All_Arts$Institutions.12 == "University of Gothenburg" | All_Arts$Institutions.13 == "University of Gothenburg" | All_Arts$Institutions.14 == "University of Gothenburg" | All_Arts$Institutions.15 == "University of Gothenburg"
+                        | All_Arts$Institutions.16 == "University of Gothenburg" | All_Arts$Institutions.17 == "University of Gothenburg" | All_Arts$Institutions.18 == "University of Gothenburg" ,]
+write.csv(Gothenburg_Arts, file = "Gothenburg_Arts.csv",)
+
+#Monash University
+Monash_Arts = All_Arts[All_Arts$Institutions.1 == "Monash University" | All_Arts$Institutions.2 == "Monash University" | All_Arts$Institutions.3 == "Monash University" | All_Arts$Institutions.3.1 == "Monash University" |
+                             All_Arts$Institutions.4 == "Monash University" | All_Arts$Institutions.5 == "Monash University" | All_Arts$Institutions.6 == "Monash University" | All_Arts$Institutions.7 == "Monash University"
+                           | All_Arts$Institutions.8 == "Monash University" | All_Arts$Institutions.9 == "Monash University" | All_Arts$Institutions.10 == "Monash University" | All_Arts$Institutions.11 == "Monash University"
+                           | All_Arts$Institutions.12 == "Monash University" | All_Arts$Institutions.13 == "Monash University" | All_Arts$Institutions.14 == "Monash University" | All_Arts$Institutions.15 == "Monash University"
+                           | All_Arts$Institutions.16 == "Monash University" | All_Arts$Institutions.17 == "Monash University" | All_Arts$Institutions.18 == "Monash University" ,]
+write.csv(Monash_Arts, file = "Monash_Arts.csv",)
+
+#Tilburg University 
+Tilburg_Arts = All_Arts[All_Arts$Institutions.1 == "Tilburg University" | All_Arts$Institutions.2 == "Tilburg University" | All_Arts$Institutions.3 == "Tilburg University" | All_Arts$Institutions.3.1 == "Tilburg University" |
+                         All_Arts$Institutions.4 == "Tilburg University" | All_Arts$Institutions.5 == "Tilburg University" | All_Arts$Institutions.6 == "Tilburg University" | All_Arts$Institutions.7 == "Tilburg University"
+                       | All_Arts$Institutions.8 == "Tilburg University" | All_Arts$Institutions.9 == "Tilburg University" | All_Arts$Institutions.10 == "Tilburg University" | All_Arts$Institutions.11 == "Tilburg University"
+                       | All_Arts$Institutions.12 == "Tilburg University" | All_Arts$Institutions.13 == "Tilburg University" | All_Arts$Institutions.14 == "Tilburg University" | All_Arts$Institutions.15 == "Tilburg University"
+                       | All_Arts$Institutions.16 == "Tilburg University" | All_Arts$Institutions.17 == "Tilburg University" | All_Arts$Institutions.18 == "Tilburg University" ,]
+write.csv(Tilburg_Arts, file = "Tllburg_Arts.csv",)
+#Russian State University for the Humanities
+Russ_uni_Arts = All_Arts[All_Arts$Institutions.1 == "Russian State University for the Humanities" | All_Arts$Institutions.2 == "Russian State University for the Humanities" | All_Arts$Institutions.3 == "Russian State University for the Humanities" | All_Arts$Institutions.3.1 == "Russian State University for the Humanities" |
+                          All_Arts$Institutions.4 == "Russian State University for the Humanities" | All_Arts$Institutions.5 == "Russian State University for the Humanities" | All_Arts$Institutions.6 == "Russian State University for the Humanities" | All_Arts$Institutions.7 == "Russian State University for the Humanities"
+                        | All_Arts$Institutions.8 == "Russian State University for the Humanities" | All_Arts$Institutions.9 == "Russian State University for the Humanities" | All_Arts$Institutions.10 == "Russian State University for the Humanities" | All_Arts$Institutions.11 == "Russian State University for the Humanities"
+                        | All_Arts$Institutions.12 == "Russian State University for the Humanities" | All_Arts$Institutions.13 == "Russian State University for the Humanities" | All_Arts$Institutions.14 == "Russian State University for the Humanities" | All_Arts$Institutions.15 == "Russian State University for the Humanities"
+                        | All_Arts$Institutions.16 == "Russian State University for the Humanities" | All_Arts$Institutions.17 == "Russian State University for the Humanities" | All_Arts$Institutions.18 == "Russian State University for the Humanities" ,]
+write.csv(Russ_uni_Arts, file = "rusuni_Arts.csv",)
+
+
+#Ghent University
+
+Ghent_Arts = All_Arts[All_Arts$Institutions.1 == "Ghent University" | All_Arts$Institutions.2 == "Ghent University" | All_Arts$Institutions.3 == "Ghent University" | All_Arts$Institutions.3.1 == "Ghent University" |
+                          All_Arts$Institutions.4 == "Ghent University" | All_Arts$Institutions.5 == "Ghent University" | All_Arts$Institutions.6 == "Ghent University" | All_Arts$Institutions.7 == "Ghent University"
+                        | All_Arts$Institutions.8 == "Ghent University" | All_Arts$Institutions.9 == "Ghent University" | All_Arts$Institutions.10 == "Ghent University" | All_Arts$Institutions.11 == "Ghent University"
+                        | All_Arts$Institutions.12 == "Ghent University" | All_Arts$Institutions.13 == "Ghent University" | All_Arts$Institutions.14 == "Ghent University" | All_Arts$Institutions.15 == "Ghent University"
+                        | All_Arts$Institutions.16 == "Ghent University" | All_Arts$Institutions.17 == "Ghent University" | All_Arts$Institutions.18 == "Ghent University" ,]
+write.csv(Ghent_Arts, file = "Ghent_Arts.csv",)
+
+
+####Bio Sciences
+
+
+All_BS = listings[listings$ASJC.B2 == "Agricultural and Biological Sciences"| listings$ASJC.C2 == "Agricultural and Biological Sciences"| listings$ASJC.D2 == "Agricultural and Biological Sciences" | listings$ASJC.E2 == "Agricultural and Biological Sciences" 
+                    | listings$ASJC.F2 == "Agricultural and Biological Sciences" | listings$ASJC.G2 == "Agricultural and Biological Sciences" | listings$ASJC.H2 == "Agricultural and Biological Sciences" | listings$ASJC.I2 == "Agricultural and Biological Sciences" 
+                    | listings$ASJC.J2 == "Agricultural and Biological Sciences"| listings$ASJC.K2 == "Agricultural and Biological Sciences" | listings$ASJC.L2 == "Agricultural and Biological Sciences" | listings$ASJC.M2 == "Agricultural and Biological Sciences"
+                    | listings$ASJC.N2 == "Agricultural and Biological Sciences"| listings$ASJC.B2 == "Biochemistry, Genetics and Molecular Biology"| listings$ASJC.C2 == "Biochemistry, Genetics and Molecular Biology"| listings$ASJC.D2 == "Biochemistry, Genetics and Molecular Biology" | listings$ASJC.E2 == "Biochemistry, Genetics and Molecular Biology" 
+                  | listings$ASJC.F2 == "Biochemistry, Genetics and Molecular Biology" | listings$ASJC.G2 == "Biochemistry, Genetics and Molecular Biology" | listings$ASJC.H2 == "Biochemistry, Genetics and Molecular Biology" | listings$ASJC.I2 == "Biochemistry, Genetics and Molecular Biology" 
+                  | listings$ASJC.J2 == "Biochemistry, Genetics and Molecular Biology"| listings$ASJC.K2 == "Biochemistry, Genetics and Molecular Biology" | listings$ASJC.L2 == "Biochemistry, Genetics and Molecular Biology" | listings$ASJC.M2 == "Biochemistry, Genetics and Molecular Biology"
+                  | listings$ASJC.N2 == "Biochemistry, Genetics and Molecular Biology" | listings$ASJC.B2 == "Pharmacology, Toxicology and Pharmaceutics"| listings$ASJC.C2 == "Pharmacology, Toxicology and Pharmaceutics"| listings$ASJC.D2 == "Pharmacology, Toxicology and Pharmaceutics" | listings$ASJC.E2 == "Pharmacology, Toxicology and Pharmaceutics" 
+                  | listings$ASJC.F2 == "Pharmacology, Toxicology and Pharmaceutics" | listings$ASJC.G2 == "Pharmacology, Toxicology and Pharmaceutics" | listings$ASJC.H2 == "Pharmacology, Toxicology and Pharmaceutics" | listings$ASJC.I2 == "Pharmacology, Toxicology and Pharmaceutics" 
+                  | listings$ASJC.J2 == "Pharmacology, Toxicology and Pharmaceutics"| listings$ASJC.K2 == "Pharmacology, Toxicology and Pharmaceutics" | listings$ASJC.L2 == "Pharmacology, Toxicology and Pharmaceutics" | listings$ASJC.M2 == "Pharmacology, Toxicology and Pharmaceutics"
+                  | listings$ASJC.N2 == "Pharmacology, Toxicology and Pharmaceutics"| listings$ASJC.B2 == "Immunology and Microbiology"| listings$ASJC.C2 == "Immunology and Microbiology"| listings$ASJC.D2 == "Immunology and Microbiology" | listings$ASJC.E2 == "Immunology and Microbiology" 
+                  | listings$ASJC.F2 == "Immunology and Microbiology" | listings$ASJC.G2 == "Immunology and Microbiology" | listings$ASJC.H2 == "Immunology and Microbiology" | listings$ASJC.I2 == "Immunology and Microbiology" 
+                  | listings$ASJC.J2 == "Immunology and Microbiology"| listings$ASJC.K2 == "Immunology and Microbiology" | listings$ASJC.L2 == "Immunology and Microbiology" | listings$ASJC.M2 == "Immunology and Microbiology"
+                  | listings$ASJC.N2 == "Immunology and Microbiology",]
+write.csv(All_BS, file = "All_BS.csv",)
+
+
+
+###USA BS
+
+
+BS_USA = All_BS[All_BS$country1 == "United States"|All_BS$country2 == "United States"|All_BS$country3 == "United States" |All_BS$country4 == "United States" |All_BS$country5 == "United States" 
+                |All_BS$country6 == "United States" |All_BS$country7 == "United States" |All_BS$country8 == "United States" |All_BS$country9 == "United States",]
+write.csv(BS_USA, file = "BS_USA.csv",)
+
+##Germany BS
+BS_GER = All_BS[All_BS$country1 == "Germany"|All_BS$country2 == "Germany"|All_BS$country3 == "Germany" |All_BS$country4 == "Germany" |All_BS$country5 == "Germany" 
+                |All_BS$country6 == "Germany" |All_BS$country7 == "Germany" |All_BS$country8 == "Germany" |All_BS$country9 == "Germany",]
+write.csv(BS_GER, file = "BS_GER.csv",)
+
+##China BS
+BS_China = All_BS[All_BS$country1 == "China"|All_BS$country2 == "China"|All_BS$country3 == "China" |All_BS$country4 == "China" |All_BS$country5 == "China" 
+                |All_BS$country6 == "China" |All_BS$country7 == "China" |All_BS$country8 == "China" |All_BS$country9 == "China",]
+write.csv(BS_China, file = "BS_china.csv",)
+
+##France BS
+BS_France = All_BS[All_BS$country1 == "France"|All_BS$country2 == "France"|All_BS$country3 == "France" |All_BS$country4 == "France" |All_BS$country5 == "France" 
+                |All_BS$country6 == "France" |All_BS$country7 == "France" |All_BS$country8 == "France" |All_BS$country9 == "France",]
+write.csv(BS_France, file = "BS_France.csv",)
+
+#Australia BS
+BS_Aus = All_BS[All_BS$country1 == "Australia"|All_BS$country2 == "Australia"|All_BS$country3 == "Australia" |All_BS$country4 == "Australia" |All_BS$country5 == "Australia" 
+                |All_BS$country6 == "Australia" |All_BS$country7 == "Australia" |All_BS$country8 == "Australia" |All_BS$country9 == "Australia",]
+write.csv(BS_Aus, file = "BS_AUS.csv",)
+
+####institutions BS
+
+###
+
+BS_CNRS = All_BS[All_BS$Institutions.1 == "CNRS" | All_BS$Institutions.2 == "CNRS" | All_BS$Institutions.3 == "CNRS" | All_BS$Institutions.3.1 == "CNRS" |
+                        All_BS$Institutions.4 == "CNRS" | All_BS$Institutions.5 == "CNRS" | All_BS$Institutions.6 == "CNRS" | All_BS$Institutions.7 == "CNRS"
+                      | All_BS$Institutions.8 == "CNRS" | All_BS$Institutions.9 == "CNRS" | All_BS$Institutions.10 == "CNRS" | All_BS$Institutions.11 == "CNRS"
+                      | All_BS$Institutions.12 == "CNRS" | All_BS$Institutions.13 == "CNRS" | All_BS$Institutions.14 == "CNRS" | All_BS$Institutions.15 == "CNRS"
+                      | All_BS$Institutions.16 == "CNRS" | All_BS$Institutions.17 == "CNRS" | All_BS$Institutions.18 == "CNRS" ,]
+write.csv(BS_CNRS, file = "BS_CNRS.csv",)
+
+
+
+
+#Universite Paris-Saclay
+BS_Paris = All_BS[All_BS$Institutions.1 == "Universite Paris-Saclay" | All_BS$Institutions.2 == "Universite Paris-Saclay" | All_BS$Institutions.3 == "Universite Paris-Saclay" | All_BS$Institutions.3.1 == "Universite Paris-Saclay" |
+                   All_BS$Institutions.4 == "Universite Paris-Saclay" | All_BS$Institutions.5 == "Universite Paris-Saclay" | All_BS$Institutions.6 == "Universite Paris-Saclay" | All_BS$Institutions.7 == "Universite Paris-Saclay"
+                 | All_BS$Institutions.8 == "Universite Paris-Saclay" | All_BS$Institutions.9 == "Universite Paris-Saclay" | All_BS$Institutions.10 == "Universite Paris-Saclay" | All_BS$Institutions.11 == "Universite Paris-Saclay"
+                 | All_BS$Institutions.12 == "Universite Paris-Saclay" | All_BS$Institutions.13 == "Universite Paris-Saclay" | All_BS$Institutions.14 == "Universite Paris-Saclay" | All_BS$Institutions.15 == "Universite Paris-Saclay"
+                 | All_BS$Institutions.16 == "Universite Paris-Saclay" | All_BS$Institutions.17 == "Universite Paris-Saclay" | All_BS$Institutions.18 == "Universite Paris-Saclay" ,]
+write.csv(BS_Paris, file = "BS_Universite Paris-Saclay.csv",)
+
+
+#University College Dublin
+BS_Dub = All_BS[All_BS$Institutions.1 == "University College Dublin" | All_BS$Institutions.2 == "University College Dublin" | All_BS$Institutions.3 == "University College Dublin" | All_BS$Institutions.3.1 == "University College Dublin" |
+                    All_BS$Institutions.4 == "University College Dublin" | All_BS$Institutions.5 == "University College Dublin" | All_BS$Institutions.6 == "University College Dublin" | All_BS$Institutions.7 == "University College Dublin"
+                  | All_BS$Institutions.8 == "University College Dublin" | All_BS$Institutions.9 == "University College Dublin" | All_BS$Institutions.10 == "University College Dublin" | All_BS$Institutions.11 == "University College Dublin"
+                  | All_BS$Institutions.12 == "University College Dublin" | All_BS$Institutions.13 == "University College Dublin" | All_BS$Institutions.14 == "University College Dublin" | All_BS$Institutions.15 == "University College Dublin"
+                  | All_BS$Institutions.16 == "University College Dublin" | All_BS$Institutions.17 == "University College Dublin" | All_BS$Institutions.18 == "University College Dublin" ,]
+write.csv(BS_Dub, file = "BS_University College Dublin.csv",)
+
+
+#Leiden University
+BS_Leiden = All_BS[All_BS$Institutions.1 == "Leiden University" | All_BS$Institutions.2 == "Leiden University" | All_BS$Institutions.3 == "Leiden University" | All_BS$Institutions.3.1 == "Leiden University" |
+                  All_BS$Institutions.4 == "Leiden University" | All_BS$Institutions.5 == "Leiden University" | All_BS$Institutions.6 == "Leiden University" | All_BS$Institutions.7 == "Leiden University"
+                | All_BS$Institutions.8 == "Leiden University" | All_BS$Institutions.9 == "Leiden University" | All_BS$Institutions.10 == "Leiden University" | All_BS$Institutions.11 == "Leiden University"
+                | All_BS$Institutions.12 == "Leiden University" | All_BS$Institutions.13 == "Leiden University" | All_BS$Institutions.14 == "Leiden University" | All_BS$Institutions.15 == "Leiden University"
+                | All_BS$Institutions.16 == "Leiden University" | All_BS$Institutions.17 == "Leiden University" | All_BS$Institutions.18 == "Leiden University" ,]
+write.csv(BS_Leiden, file = "BS_Leiden University.csv",)
+
+
+#Sorbonne Université
+BS_Sorb = All_BS[All_BS$Institutions.1 == "Sorbonne Universite" | All_BS$Institutions.2 == "Sorbonne Universite" | All_BS$Institutions.3 == "Sorbonne Universite" | All_BS$Institutions.3.1 == "Sorbonne Universite" |
+                     All_BS$Institutions.4 == "Sorbonne Universite" | All_BS$Institutions.5 == "Sorbonne Universite" | All_BS$Institutions.6 == "Sorbonne Universite" | All_BS$Institutions.7 == "Sorbonne Universite"
+                   | All_BS$Institutions.8 == "Sorbonne Universite" | All_BS$Institutions.9 == "Sorbonne Universite" | All_BS$Institutions.10 == "Sorbonne Universite" | All_BS$Institutions.11 == "Sorbonne Universite"
+                   | All_BS$Institutions.12 == "Sorbonne Universite" | All_BS$Institutions.13 == "Sorbonne Universite" | All_BS$Institutions.14 == "Sorbonne Universite" | All_BS$Institutions.15 == "Sorbonne Universite"
+                   | All_BS$Institutions.16 == "Sorbonne Universite" | All_BS$Institutions.17 == "Sorbonne Universite" | All_BS$Institutions.18 == "Sorbonne Universite" ,]
+write.csv(BS_Sorb, file = "BS_Sorbonne Universite.csv",)
+
+
+#Institute national de la recherche agrnomique
+#Institut national de recherche pour l'agriculture, l'alimentation et l'environnement
+BS_INRA = All_BS[All_BS$Institutions.1 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.2 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.3 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.3.1 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" |
+                   All_BS$Institutions.4 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.5 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.6 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.7 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement"
+                 | All_BS$Institutions.8 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.9 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.10 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.11 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement"
+                 | All_BS$Institutions.12 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.13 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.14 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.15 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement"
+                 | All_BS$Institutions.16 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.17 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" | All_BS$Institutions.18 == "Institut national de recherche pour l'agriculture, l'alimentation et l'environnement" ,]
+write.csv(BS_INRA, file = "BS_INRA.csv",)
+
+
+#Harvard University
+BS_Harv = All_BS[All_BS$Institutions.1 == "Harvard University" | All_BS$Institutions.2 == "Harvard University" | All_BS$Institutions.3 == "Harvard University" | All_BS$Institutions.3.1 == "Harvard University" |
+                   All_BS$Institutions.4 == "Harvard University" | All_BS$Institutions.5 == "Harvard University" | All_BS$Institutions.6 == "Harvard University" | All_BS$Institutions.7 == "Harvard University"
+                 | All_BS$Institutions.8 == "Harvard University" | All_BS$Institutions.9 == "Harvard University" | All_BS$Institutions.10 == "Harvard University" | All_BS$Institutions.11 == "Harvard University"
+                 | All_BS$Institutions.12 == "Harvard University" | All_BS$Institutions.13 == "Harvard University" | All_BS$Institutions.14 == "Harvard University" | All_BS$Institutions.15 == "Harvard University"
+                 | All_BS$Institutions.16 == "Harvard University" | All_BS$Institutions.17 == "Harvard University" | All_BS$Institutions.18 == "Harvard University" ,]
+write.csv(BS_Harv, file = "BS_Harvard University.csv",)
+
+
+#Chinese Academy of Sciences 
+BS_CAS = All_BS[All_BS$Institutions.1 == "Chinese Academy of Sciences" | All_BS$Institutions.2 == "Chinese Academy of Sciences" | All_BS$Institutions.3 == "Chinese Academy of Sciences" | All_BS$Institutions.3.1 == "Chinese Academy of Sciences" |
+                   All_BS$Institutions.4 == "Chinese Academy of Sciences" | All_BS$Institutions.5 == "Chinese Academy of Sciences" | All_BS$Institutions.6 == "Chinese Academy of Sciences" | All_BS$Institutions.7 == "Chinese Academy of Sciences"
+                 | All_BS$Institutions.8 == "Chinese Academy of Sciences" | All_BS$Institutions.9 == "Chinese Academy of Sciences" | All_BS$Institutions.10 == "Chinese Academy of Sciences" | All_BS$Institutions.11 == "Chinese Academy of Sciences"
+                 | All_BS$Institutions.12 == "Chinese Academy of Sciences" | All_BS$Institutions.13 == "Chinese Academy of Sciences" | All_BS$Institutions.14 == "Chinese Academy of Sciences" | All_BS$Institutions.15 == "Chinese Academy of Sciences"
+                 | All_BS$Institutions.16 == "Chinese Academy of Sciences" | All_BS$Institutions.17 == "Chinese Academy of Sciences" | All_BS$Institutions.18 == "Chinese Academy of Sciences" ,]
+write.csv(BS_CAS, file = "BS_Chinese Academy of Sciences.csv",)
+
+
+
+
+#CSIC
+BS_CSIC = All_BS[All_BS$Institutions.1 == "CSIC" | All_BS$Institutions.2 == "CSIC" | All_BS$Institutions.3 == "CSIC" | All_BS$Institutions.3.1 == "CSIC" |
+                  All_BS$Institutions.4 == "CSIC" | All_BS$Institutions.5 == "CSIC" | All_BS$Institutions.6 == "CSIC" | All_BS$Institutions.7 == "CSIC"
+                | All_BS$Institutions.8 == "CSIC" | All_BS$Institutions.9 == "CSIC" | All_BS$Institutions.10 == "CSIC" | All_BS$Institutions.11 == "CSIC"
+                | All_BS$Institutions.12 == "CSIC" | All_BS$Institutions.13 == "CSIC" | All_BS$Institutions.14 == "CSIC" | All_BS$Institutions.15 == "CSIC"
+                | All_BS$Institutions.16 == "CSIC" | All_BS$Institutions.17 == "CSIC" | All_BS$Institutions.18 == "CSIC" ,]
+write.csv(BS_CSIC, file = "BS_CSIC.csv",)
+
+#UUniversity of Copenhagen
+BS_Copen = All_BS[All_BS$Institutions.1 == "University of Copenhagen" | All_BS$Institutions.2 == "University of Copenhagen" | All_BS$Institutions.3 == "University of Copenhagen" | All_BS$Institutions.3.1 == "University of Copenhagen" |
+                   All_BS$Institutions.4 == "University of Copenhagen" | All_BS$Institutions.5 == "University of Copenhagen" | All_BS$Institutions.6 == "University of Copenhagen" | All_BS$Institutions.7 == "University of Copenhagen"
+                 | All_BS$Institutions.8 == "University of Copenhagen" | All_BS$Institutions.9 == "University of Copenhagen" | All_BS$Institutions.10 == "University of Copenhagen" | All_BS$Institutions.11 == "University of Copenhagen"
+                 | All_BS$Institutions.12 == "University of Copenhagen" | All_BS$Institutions.13 == "University of Copenhagen" | All_BS$Institutions.14 == "University of Copenhagen" | All_BS$Institutions.15 == "University of Copenhagen"
+                 | All_BS$Institutions.16 == "University of Copenhagen" | All_BS$Institutions.17 == "University of Copenhagen" | All_BS$Institutions.18 == "University of Copenhagen" ,]
+write.csv(BS_Copen, file = "BS_Copen.csv",)
+
+
+
+####Faculty of Buisness
+##Chemical Engineering, ECONOMETRICS AND  Business, Management and Accounting
+
+
+All_Buis = listings[listings$ASJC.B2 == "Chemical Engineering"| listings$ASJC.C2 == "Chemical Engineering"| listings$ASJC.D2 == "Chemical Engineering" | listings$ASJC.E2 == "Chemical Engineering" 
+                  | listings$ASJC.F2 == "Chemical Engineering" | listings$ASJC.G2 == "Chemical Engineering" | listings$ASJC.H2 == "Chemical Engineering" | listings$ASJC.I2 == "Chemical Engineering" 
+                  | listings$ASJC.J2 == "Chemical Engineering"| listings$ASJC.K2 == "Chemical Engineering" | listings$ASJC.L2 == "Chemical Engineering" | listings$ASJC.M2 == "Chemical Engineering"
+                  | listings$ASJC.N2 == "Chemical Engineering" | listings$ASJC.B2 == "Business, Management and Accounting"| listings$ASJC.C2 == "Business, Management and Accounting"| listings$ASJC.D2 == "Business, Management and Accounting" | listings$ASJC.E2 == "Business, Management and Accounting" 
+                  | listings$ASJC.F2 == "Business, Management and Accounting" | listings$ASJC.G2 == "Business, Management and Accounting" | listings$ASJC.H2 == "Business, Management and Accounting" | listings$ASJC.I2 == "Business, Management and Accounting" 
+                  | listings$ASJC.J2 == "Business, Management and Accounting"| listings$ASJC.K2 == "Business, Management and Accounting" | listings$ASJC.L2 == "Business, Management and Accounting" | listings$ASJC.M2 == "Business, Management and Accounting"
+                  | listings$ASJC.N2 == "Business, Management and Accounting",]
+write.csv(All_Buis, file = "All_Buis.csv",)
+
+#####countries USA (265), China (135), Australia (93), Italy (73), and Sweden (71)
+
+###United States
+
+Buis_USA = All_Buis[All_Buis$country1 == "United States"|All_Buis$country2 == "United States"|All_Buis$country3 == "United States" |All_Buis$country4 == "United States" |All_Buis$country5 == "United States" 
+                |All_Buis$country6 == "United States" |All_Buis$country7 == "United States" |All_Buis$country8 == "United States" |All_Buis$country9 == "United States",]
+write.csv(Buis_USA, file = "BuiS_USA.csv",)
+
+
+###China
+
+Buis_China = All_Buis[All_Buis$country1 == "China"|All_Buis$country2 == "China"|All_Buis$country3 == "China" |All_Buis$country4 == "China" |All_Buis$country5 == "China" 
+                  |All_Buis$country6 == "China" |All_Buis$country7 == "China" |All_Buis$country8 == "China" |All_Buis$country9 == "China",]
+write.csv(Buis_China, file = "BuiS_China.csv",)
+
+###Australia
+Buis_Aus = All_Buis[All_Buis$country1 == "Australia"|All_Buis$country2 == "Australia"|All_Buis$country3 == "Australia" |All_Buis$country4 == "Australia" |All_Buis$country5 == "Australia" 
+                      |All_Buis$country6 == "Australia" |All_Buis$country7 == "Australia" |All_Buis$country8 == "Australia" |All_Buis$country9 == "Australia",]
+write.csv(Buis_Aus, file = "BuiS_Aus.csv",)
+
+
+###Italy 
+Buis_Italy = All_Buis[All_Buis$country1 == "Italy"|All_Buis$country2 == "Italy"|All_Buis$country3 == "Italy" |All_Buis$country4 == "Italy" |All_Buis$country5 == "Italy" 
+                    |All_Buis$country6 == "Italy" |All_Buis$country7 == "Italy" |All_Buis$country8 == "Italy" |All_Buis$country9 == "Italy",]
+write.csv(Buis_Italy, file = "BuiS_Italy.csv",)
+
+### Sweden
+Buis_Sweden = All_Buis[All_Buis$country1 == "Sweden"|All_Buis$country2 == "Sweden"|All_Buis$country3 == "Sweden" |All_Buis$country4 == "Sweden" |All_Buis$country5 == "Sweden" 
+                      |All_Buis$country6 == "Sweden" |All_Buis$country7 == "Sweden" |All_Buis$country8 == "Sweden" |All_Buis$country9 == "Sweden",]
+write.csv(Buis_Sweden, file = "BuiS_Sweden.csv",)
+
+####Institutes 
+
+#Auckland University of Technology
+
+Buis_Auk = All_Buis[All_Buis$Institutions.1 == "Auckland University of Technology" | All_Buis$Institutions.2 == "Auckland University of Technology" | All_Buis$Institutions.3 == "Auckland University of Technology" | All_Buis$Institutions.3.1 == "Auckland University of Technology" |
+                    All_Buis$Institutions.4 == "Auckland University of Technology" | All_Buis$Institutions.5 == "Auckland University of Technology" | All_Buis$Institutions.6 == "Auckland University of Technology" | All_Buis$Institutions.7 == "Auckland University of Technology"
+                  | All_Buis$Institutions.8 == "Auckland University of Technology" | All_Buis$Institutions.9 == "Auckland University of Technology" | All_Buis$Institutions.10 == "Auckland University of Technology" | All_Buis$Institutions.11 == "Auckland University of Technology"
+                  | All_Buis$Institutions.12 == "Auckland University of Technology" | All_Buis$Institutions.13 == "Auckland University of Technology" | All_Buis$Institutions.14 == "Auckland University of Technology" | All_Buis$Institutions.15 == "Auckland University of Technology"
+                  | All_Buis$Institutions.16 == "Auckland University of Technology" | All_Buis$Institutions.17 == "Auckland University of Technology" | All_Buis$Institutions.18 == "Auckland University of Technology" ,]
+write.csv(Buis_Auk, file = "Buis_Auk.csv",)
+
+
+
+#Carnegie Mellon University
+Buis_Carg = All_Buis[All_Buis$Institutions.1 == "Carnegie Mellon University" | All_Buis$Institutions.2 == "Carnegie Mellon University" | All_Buis$Institutions.3 == "Carnegie Mellon University" | All_Buis$Institutions.3.1 == "Carnegie Mellon University" |
+                      All_Buis$Institutions.4 == "Carnegie Mellon University" | All_Buis$Institutions.5 == "Carnegie Mellon University" | All_Buis$Institutions.6 == "Carnegie Mellon University" | All_Buis$Institutions.7 == "Carnegie Mellon University"
+                    | All_Buis$Institutions.8 == "Carnegie Mellon University" | All_Buis$Institutions.9 == "Carnegie Mellon University" | All_Buis$Institutions.10 == "Carnegie Mellon University" | All_Buis$Institutions.11 == "Carnegie Mellon University"
+                    | All_Buis$Institutions.12 == "Carnegie Mellon University" | All_Buis$Institutions.13 == "Carnegie Mellon University" | All_Buis$Institutions.14 == "Carnegie Mellon University" | All_Buis$Institutions.15 == "Carnegie Mellon University"
+                    | All_Buis$Institutions.16 == "Carnegie Mellon University" | All_Buis$Institutions.17 == "Carnegie Mellon University" | All_Buis$Institutions.18 == "Carnegie Mellon University" ,]
+write.csv(Buis_Carg, file = "Buis_Carg.csv",)
+
+
+#Bocconi University
+
+Buis_Bocc = All_Buis[All_Buis$Institutions.1 == "Bocconi University" | All_Buis$Institutions.2 == "Bocconi University" | All_Buis$Institutions.3 == "Bocconi University" | All_Buis$Institutions.3.1 == "Bocconi University" |
+                       All_Buis$Institutions.4 == "Bocconi University" | All_Buis$Institutions.5 == "Bocconi University" | All_Buis$Institutions.6 == "Bocconi University" | All_Buis$Institutions.7 == "Bocconi University"
+                     | All_Buis$Institutions.8 == "Bocconi University" | All_Buis$Institutions.9 == "Bocconi University" | All_Buis$Institutions.10 == "Bocconi University" | All_Buis$Institutions.11 == "Bocconi University"
+                     | All_Buis$Institutions.12 == "Bocconi University" | All_Buis$Institutions.13 == "Bocconi University" | All_Buis$Institutions.14 == "Bocconi University" | All_Buis$Institutions.15 == "Bocconi University"
+                     | All_Buis$Institutions.16 == "Bocconi University" | All_Buis$Institutions.17 == "Bocconi University" | All_Buis$Institutions.18 == "Bocconi University" ,]
+write.csv(Buis_Bocc, file = "Buis_Bocc.csv",)
+
+
+
+#Kwame Nkrumah University of Science and Technology
+Buis_Kwame = All_Buis[All_Buis$Institutions.1 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.2 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.3 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.3.1 == "Kwame Nkrumah University of Science and Technology" |
+                       All_Buis$Institutions.4 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.5 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.6 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.7 == "Kwame Nkrumah University of Science and Technology"
+                     | All_Buis$Institutions.8 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.9 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.10 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.11 == "Kwame Nkrumah University of Science and Technology"
+                     | All_Buis$Institutions.12 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.13 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.14 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.15 == "Kwame Nkrumah University of Science and Technology"
+                     | All_Buis$Institutions.16 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.17 == "Kwame Nkrumah University of Science and Technology" | All_Buis$Institutions.18 == "Kwame Nkrumah University of Science and Technology" ,]
+write.csv(Buis_Kwame, file = "Buis_Kwame.csv",)
+
+
+#Athens University of Economics and Business
+Buis_Athens = All_Buis[All_Buis$Institutions.1 == "Athens University of Economics and Business" | All_Buis$Institutions.2 == "Athens University of Economics and Business" | All_Buis$Institutions.3 == "Athens University of Economics and Business" | All_Buis$Institutions.3.1 == "Athens University of Economics and Business" |
+                        All_Buis$Institutions.4 == "Athens University of Economics and Business" | All_Buis$Institutions.5 == "Athens University of Economics and Business" | All_Buis$Institutions.6 == "Athens University of Economics and Business" | All_Buis$Institutions.7 == "Athens University of Economics and Business"
+                      | All_Buis$Institutions.8 == "Athens University of Economics and Business" | All_Buis$Institutions.9 == "Athens University of Economics and Business" | All_Buis$Institutions.10 == "Athens University of Economics and Business" | All_Buis$Institutions.11 == "Athens University of Economics and Business"
+                      | All_Buis$Institutions.12 == "Athens University of Economics and Business" | All_Buis$Institutions.13 == "Athens University of Economics and Business" | All_Buis$Institutions.14 == "Athens University of Economics and Business" | All_Buis$Institutions.15 == "Athens University of Economics and Business"
+                      | All_Buis$Institutions.16 == "Athens University of Economics and Business" | All_Buis$Institutions.17 == "Athens University of Economics and Business" | All_Buis$Institutions.18 == "Athens University of Economics and Business" ,]
+write.csv(Buis_Athens, file = "Buis_Athens.csv",)
+
+#Linnaeus University 
+Buis_Linn = All_Buis[All_Buis$Institutions.1 == "Linnaeus University" | All_Buis$Institutions.2 == "Linnaeus University" | All_Buis$Institutions.3 == "Linnaeus University" | All_Buis$Institutions.3.1 == "Linnaeus University" |
+                        All_Buis$Institutions.4 == "Linnaeus University" | All_Buis$Institutions.5 == "Linnaeus University" | All_Buis$Institutions.6 == "Linnaeus University" | All_Buis$Institutions.7 == "Linnaeus University"
+                      | All_Buis$Institutions.8 == "Linnaeus University" | All_Buis$Institutions.9 == "Linnaeus University" | All_Buis$Institutions.10 == "Linnaeus University" | All_Buis$Institutions.11 == "Linnaeus University"
+                      | All_Buis$Institutions.12 == "Linnaeus University" | All_Buis$Institutions.13 == "Linnaeus University" | All_Buis$Institutions.14 == "Linnaeus University" | All_Buis$Institutions.15 == "Linnaeus University"
+                      | All_Buis$Institutions.16 == "Linnaeus University" | All_Buis$Institutions.17 == "Linnaeus University" | All_Buis$Institutions.18 == "Linnaeus University" ,]
+write.csv(Buis_Linn, file = "Buis_Linn.csv",)
+
+
+
+#University of Cyprus
+Buis_Cyprus = All_Buis[All_Buis$Institutions.1 == "University of Cyprus" | All_Buis$Institutions.2 == "University of Cyprus" | All_Buis$Institutions.3 == "University of Cyprus" | All_Buis$Institutions.3.1 == "University of Cyprus" |
+                       All_Buis$Institutions.4 == "University of Cyprus" | All_Buis$Institutions.5 == "University of Cyprus" | All_Buis$Institutions.6 == "University of Cyprus" | All_Buis$Institutions.7 == "University of Cyprus"
+                     | All_Buis$Institutions.8 == "University of Cyprus" | All_Buis$Institutions.9 == "University of Cyprus" | All_Buis$Institutions.10 == "University of Cyprus" | All_Buis$Institutions.11 == "University of Cyprus"
+                     | All_Buis$Institutions.12 == "University of Cyprus" | All_Buis$Institutions.13 == "University of Cyprus" | All_Buis$Institutions.14 == "University of Cyprus" | All_Buis$Institutions.15 == "University of Cyprus"
+                     | All_Buis$Institutions.16 == "University of Cyprus" | All_Buis$Institutions.17 == "University of Cyprus" | All_Buis$Institutions.18 == "University of Cyprus" ,]
+write.csv(Buis_Cyprus, file = "Buis_Cyrus.csv",)
+
+
+
+#Michigan State University
+Buis_Mich = All_Buis[All_Buis$Institutions.1 == "Michigan State University" | All_Buis$Institutions.2 == "Michigan State University" | All_Buis$Institutions.3 == "Michigan State University" | All_Buis$Institutions.3.1 == "Michigan State University" |
+                         All_Buis$Institutions.4 == "Michigan State University" | All_Buis$Institutions.5 == "Michigan State University" | All_Buis$Institutions.6 == "Michigan State University" | All_Buis$Institutions.7 == "Michigan State University"
+                       | All_Buis$Institutions.8 == "Michigan State University" | All_Buis$Institutions.9 == "Michigan State University" | All_Buis$Institutions.10 == "Michigan State University" | All_Buis$Institutions.11 == "Michigan State University"
+                       | All_Buis$Institutions.12 == "Michigan State University" | All_Buis$Institutions.13 == "Michigan State University" | All_Buis$Institutions.14 == "Michigan State University" | All_Buis$Institutions.15 == "Michigan State University"
+                       | All_Buis$Institutions.16 == "Michigan State University" | All_Buis$Institutions.17 == "Michigan State University" | All_Buis$Institutions.18 == "Michigan State University" ,]
+write.csv(Buis_Mich, file = "Buis_Mich.csv",)
+
+
+#University of International Business and Economics
+Buis_IBE = All_Buis[All_Buis$Institutions.1 == "University of International Business and Economics" | All_Buis$Institutions.2 == "University of International Business and Economics" | All_Buis$Institutions.3 == "University of International Business and Economics" | All_Buis$Institutions.3.1 == "University of International Business and Economics" |
+                       All_Buis$Institutions.4 == "University of International Business and Economics" | All_Buis$Institutions.5 == "University of International Business and Economics" | All_Buis$Institutions.6 == "University of International Business and Economics" | All_Buis$Institutions.7 == "University of International Business and Economics"
+                     | All_Buis$Institutions.8 == "University of International Business and Economics" | All_Buis$Institutions.9 == "University of International Business and Economics" | All_Buis$Institutions.10 == "University of International Business and Economics" | All_Buis$Institutions.11 == "University of International Business and Economics"
+                     | All_Buis$Institutions.12 == "University of International Business and Economics" | All_Buis$Institutions.13 == "University of International Business and Economics" | All_Buis$Institutions.14 == "University of International Business and Economics" | All_Buis$Institutions.15 == "University of International Business and Economics"
+                     | All_Buis$Institutions.16 == "University of International Business and Economics" | All_Buis$Institutions.17 == "University of International Business and Economics" | All_Buis$Institutions.18 == "University of International Business and Economics" ,]
+write.csv(Buis_IBE, file = "Buis_IBE.csv",)
+
+
+#University of Sydney
+Buis_SYD = All_Buis[All_Buis$Institutions.1 == "University of Sydney" | All_Buis$Institutions.2 == "University of Sydney" | All_Buis$Institutions.3 == "University of Sydney" | All_Buis$Institutions.3.1 == "University of Sydney" |
+                      All_Buis$Institutions.4 == "University of Sydney" | All_Buis$Institutions.5 == "University of Sydney" | All_Buis$Institutions.6 == "University of Sydney" | All_Buis$Institutions.7 == "University of Sydney"
+                    | All_Buis$Institutions.8 == "University of Sydney" | All_Buis$Institutions.9 == "University of Sydney" | All_Buis$Institutions.10 == "University of Sydney" | All_Buis$Institutions.11 == "University of Sydney"
+                    | All_Buis$Institutions.12 == "University of Sydney" | All_Buis$Institutions.13 == "University of Sydney" | All_Buis$Institutions.14 == "University of Sydney" | All_Buis$Institutions.15 == "University of Sydney"
+                    | All_Buis$Institutions.16 == "University of Sydney" | All_Buis$Institutions.17 == "University of Sydney" | All_Buis$Institutions.18 == "University of Sydney" ,]
+write.csv(Buis_SYD, file = "Buis_SYD.csv",)
+
+
+####EPS
+##Chemical Engineering, Chemistry, Computer Science, Decision Sciences
+##Engineering, Mathematics, Physics and Astronomy
+
+All_EPS = listings[listings$ASJC.B2 == "Chemical Engineering"| listings$ASJC.C2 == "Chemical Engineering"| listings$ASJC.D2 == "Chemical Engineering" | listings$ASJC.E2 == "Chemical Engineering" 
+                    | listings$ASJC.F2 == "Chemical Engineering" | listings$ASJC.G2 == "Chemical Engineering" | listings$ASJC.H2 == "Chemical Engineering" | listings$ASJC.I2 == "Chemical Engineering" 
+                    | listings$ASJC.J2 == "Chemical Engineering"| listings$ASJC.K2 == "Chemical Engineering" | listings$ASJC.L2 == "Chemical Engineering" | listings$ASJC.M2 == "Chemical Engineering"
+                    | listings$ASJC.N2 == "Chemical Engineering" | listings$ASJC.B2 == "Chemistry"| listings$ASJC.C2 == "Chemistry"| listings$ASJC.D2 == "Chemistry" | listings$ASJC.E2 == "Chemistry" 
+                    | listings$ASJC.F2 == "Chemistry" | listings$ASJC.G2 == "Chemistry" | listings$ASJC.H2 == "Chemistry" | listings$ASJC.I2 == "Chemistry" 
+                    | listings$ASJC.J2 == "Chemistry"| listings$ASJC.K2 == "Chemistry" | listings$ASJC.L2 == "Chemistry" | listings$ASJC.M2 == "Chemistry"
+                    | listings$ASJC.N2 == "Chemistry"| listings$ASJC.B2 == "Computer Science"| listings$ASJC.C2 == "Computer Science"| listings$ASJC.D2 == "Computer Science" | listings$ASJC.E2 == "Computer Science" 
+                   | listings$ASJC.F2 == "Computer Science" | listings$ASJC.G2 == "Computer Science" | listings$ASJC.H2 == "Computer Science" | listings$ASJC.I2 == "Computer Science" 
+                   | listings$ASJC.J2 == "Computer Science"| listings$ASJC.K2 == "Computer Science" | listings$ASJC.L2 == "Computer Science" | listings$ASJC.M2 == "Computer Science"
+                   | listings$ASJC.N2 == "Computer Science" | listings$ASJC.B2 == "Decision Sciences"| listings$ASJC.C2 == "Decision Sciences"| listings$ASJC.D2 == "Decision Sciences" | listings$ASJC.E2 == "Decision Sciences" 
+                   | listings$ASJC.F2 == "Decision Sciences" | listings$ASJC.G2 == "Decision Sciences" | listings$ASJC.H2 == "Decision Sciences" | listings$ASJC.I2 == "Decision Sciences" 
+                   | listings$ASJC.J2 == "Decision Sciences"| listings$ASJC.K2 == "Decision Sciences" | listings$ASJC.L2 == "Decision Sciences" | listings$ASJC.M2 == "Decision Sciences"
+                   | listings$ASJC.N2 == "Decision Sciences"| listings$ASJC.B2 == "Engineering"| listings$ASJC.C2 == "Engineering"| listings$ASJC.D2 == "Engineering" | listings$ASJC.E2 == "Engineering" 
+                   | listings$ASJC.F2 == "Engineering" | listings$ASJC.G2 == "Engineering" | listings$ASJC.H2 == "Engineering" | listings$ASJC.I2 == "Engineering" 
+                   | listings$ASJC.J2 == "Engineering"| listings$ASJC.K2 == "Engineering" | listings$ASJC.L2 == "Engineering" | listings$ASJC.M2 == "Engineering"
+                   | listings$ASJC.N2 == "Engineering"| listings$ASJC.B2 == "Mathematics"| listings$ASJC.C2 == "Mathematics"| listings$ASJC.D2 == "Mathematics" | listings$ASJC.E2 == "Mathematics" 
+                   | listings$ASJC.F2 == "Mathematics" | listings$ASJC.G2 == "Mathematics" | listings$ASJC.H2 == "Mathematics" | listings$ASJC.I2 == "Mathematics" 
+                   | listings$ASJC.J2 == "Mathematics"| listings$ASJC.K2 == "Mathematics" | listings$ASJC.L2 == "Mathematics" | listings$ASJC.M2 == "Mathematics"
+                   | listings$ASJC.N2 == "Mathematics" | listings$ASJC.B2 == "Physics and Astronomy"| listings$ASJC.C2 == "Physics and Astronomy"| listings$ASJC.D2 == "Physics and Astronomy" | listings$ASJC.E2 == "Physics and Astronomy" 
+                   | listings$ASJC.F2 == "Physics and Astronomy" | listings$ASJC.G2 == "Physics and Astronomy" | listings$ASJC.H2 == "Physics and Astronomy" | listings$ASJC.I2 == "Physics and Astronomy" 
+                   | listings$ASJC.J2 == "Physics and Astronomy"| listings$ASJC.K2 == "Physics and Astronomy" | listings$ASJC.L2 == "Physics and Astronomy" | listings$ASJC.M2 == "Physics and Astronomy"
+                   | listings$ASJC.N2 == "Physics and Astronomy",]
+write.csv(All_EPS, file = "All_EPS.csv",)
+
+
+#countries China (1,416), the USA (1,240), Germany (684), France (473), and Spain (348)
+
+
+#USA
+EPS_USA = All_EPS[All_EPS$country1 == "United States"|All_EPS$country2 == "United States"|All_EPS$country3 == "United States" |All_EPS$country4 == "United States" |All_EPS$country5 == "United States" 
+                    |All_EPS$country6 == "United States" |All_EPS$country7 == "United States" |All_EPS$country8 == "United States" |All_EPS$country9 == "United States",]
+write.csv(EPS_USA, file = "EPS_USA.csv",)
+
+#China
+EPS_China = All_EPS[All_EPS$country1 == "China"|All_EPS$country2 == "China"|All_EPS$country3 == "China" |All_EPS$country4 == "China" |All_EPS$country5 == "China" 
+                  |All_EPS$country6 == "China" |All_EPS$country7 == "China" |All_EPS$country8 == "China" |All_EPS$country9 == "China",]
+write.csv(EPS_China, file = "EPS_China.csv",)
+
+#Germany
+EPS_Germany = All_EPS[All_EPS$country1 == "Germany"|All_EPS$country2 == "Germany"|All_EPS$country3 == "Germany" |All_EPS$country4 == "Germany" |All_EPS$country5 == "Germany" 
+                    |All_EPS$country6 == "Germany" |All_EPS$country7 == "Germany" |All_EPS$country8 == "Germany" |All_EPS$country9 == "Germany",]
+write.csv(EPS_Germany, file = "EPS_Germany.csv",)
+
+#France
+EPS_France = All_EPS[All_EPS$country1 == "France"|All_EPS$country2 == "France"|All_EPS$country3 == "France" |All_EPS$country4 == "France" |All_EPS$country5 == "France" 
+                      |All_EPS$country6 == "France" |All_EPS$country7 == "France" |All_EPS$country8 == "France" |All_EPS$country9 == "France",]
+write.csv(EPS_France, file = "EPS_France.csv",)
+
+#Spain
+EPS_Spain = All_EPS[All_EPS$country1 == "Spain"|All_EPS$country2 == "Spain"|All_EPS$country3 == "Spain" |All_EPS$country4 == "Spain" |All_EPS$country5 == "Spain" 
+                     |All_EPS$country6 == "Spain" |All_EPS$country7 == "Spain" |All_EPS$country8 == "Spain" |All_EPS$country9 == "Spain",]
+write.csv(EPS_Spain, file = "EPS_Spain.csv",)
+
+
+####institutes 
+
+#Ministry of Education China
+EPS_MinedC= All_EPS[All_EPS$Institutions.1 == "Ministry of Education China" | All_EPS$Institutions.2 == "Ministry of Education China" | All_EPS$Institutions.3 == "Ministry of Education China" | All_EPS$Institutions.3.1 == "Ministry of Education China" |
+                      All_EPS$Institutions.4 == "Ministry of Education China" | All_EPS$Institutions.5 == "Ministry of Education China" | All_EPS$Institutions.6 == "Ministry of Education China" | All_EPS$Institutions.7 == "Ministry of Education China"
+                    | All_EPS$Institutions.8 == "Ministry of Education China" | All_EPS$Institutions.9 == "Ministry of Education China" | All_EPS$Institutions.10 == "Ministry of Education China" | All_EPS$Institutions.11 == "Ministry of Education China"
+                    | All_EPS$Institutions.12 == "Ministry of Education China" | All_EPS$Institutions.13 == "Ministry of Education China" | All_EPS$Institutions.14 == "Ministry of Education China" | All_EPS$Institutions.15 == "Ministry of Education China"
+                    | All_EPS$Institutions.16 == "Ministry of Education China" | All_EPS$Institutions.17 == "Ministry of Education China" | All_EPS$Institutions.18 == "Ministry of Education China" ,]
+write.csv(EPS_MinedC, file = "EPS_MinedC.csv",)
+
+
+#Leiden University
+EPS_Leiden= All_EPS[All_EPS$Institutions.1 == "Leiden University" | All_EPS$Institutions.2 == "Leiden University" | All_EPS$Institutions.3 == "Leiden University" | All_EPS$Institutions.3.1 == "Leiden University" |
+                      All_EPS$Institutions.4 == "Leiden University" | All_EPS$Institutions.5 == "Leiden University" | All_EPS$Institutions.6 == "Leiden University" | All_EPS$Institutions.7 == "Leiden University"
+                    | All_EPS$Institutions.8 == "Leiden University" | All_EPS$Institutions.9 == "Leiden University" | All_EPS$Institutions.10 == "Leiden University" | All_EPS$Institutions.11 == "Leiden University"
+                    | All_EPS$Institutions.12 == "Leiden University" | All_EPS$Institutions.13 == "Leiden University" | All_EPS$Institutions.14 == "Leiden University" | All_EPS$Institutions.15 == "Leiden University"
+                    | All_EPS$Institutions.16 == "Leiden University" | All_EPS$Institutions.17 == "Leiden University" | All_EPS$Institutions.18 == "Leiden University" ,]
+write.csv(EPS_Leiden, file = "EPS_Leiden.csv",)
+
+#CSIC
+EPS_CSIC= All_EPS[All_EPS$Institutions.1 == "CSIC" | All_EPS$Institutions.2 == "CSIC" | All_EPS$Institutions.3 == "CSIC" | All_EPS$Institutions.3.1 == "CSIC" |
+                      All_EPS$Institutions.4 == "CSIC" | All_EPS$Institutions.5 == "CSIC" | All_EPS$Institutions.6 == "CSIC" | All_EPS$Institutions.7 == "CSIC"
+                    | All_EPS$Institutions.8 == "CSIC" | All_EPS$Institutions.9 == "CSIC" | All_EPS$Institutions.10 == "CSIC" | All_EPS$Institutions.11 == "CSIC"
+                    | All_EPS$Institutions.12 == "CSIC" | All_EPS$Institutions.13 == "CSIC" | All_EPS$Institutions.14 == "CSIC" | All_EPS$Institutions.15 == "CSIC"
+                    | All_EPS$Institutions.16 == "CSIC" | All_EPS$Institutions.17 == "CSIC" | All_EPS$Institutions.18 == "CSIC" ,]
+write.csv(EPS_CSIC, file = "EPS_CSIC.csv",)
+
+#International University of Rabat
+
+EPS_Rabat= All_EPS[All_EPS$Institutions.1 == "International University of Rabat" | All_EPS$Institutions.2 == "International University of Rabat" | All_EPS$Institutions.3 == "International University of Rabat" | All_EPS$Institutions.3.1 == "International University of Rabat" |
+                    All_EPS$Institutions.4 == "International University of Rabat" | All_EPS$Institutions.5 == "International University of Rabat" | All_EPS$Institutions.6 == "International University of Rabat" | All_EPS$Institutions.7 == "International University of Rabat"
+                  | All_EPS$Institutions.8 == "International University of Rabat" | All_EPS$Institutions.9 == "International University of Rabat" | All_EPS$Institutions.10 == "International University of Rabat" | All_EPS$Institutions.11 == "International University of Rabat"
+                  | All_EPS$Institutions.12 == "International University of Rabat" | All_EPS$Institutions.13 == "International University of Rabat" | All_EPS$Institutions.14 == "International University of Rabat" | All_EPS$Institutions.15 == "International University of Rabat"
+                  | All_EPS$Institutions.16 == "International University of Rabat" | All_EPS$Institutions.17 == "International University of Rabat" | All_EPS$Institutions.18 == "International University of Rabat" ,]
+write.csv(EPS_Rabat, file = "EPS_Rabat.csv",)
+
+#Universite Paris-Saclay
+EPS_Paris= All_EPS[All_EPS$Institutions.1 == "Universite Paris-Saclay" | All_EPS$Institutions.2 == "Universite Paris-Saclay" | All_EPS$Institutions.3 == "Universite Paris-Saclay" | All_EPS$Institutions.3.1 == "Universite Paris-Saclay" |
+                     All_EPS$Institutions.4 == "Universite Paris-Saclay" | All_EPS$Institutions.5 == "Universite Paris-Saclay" | All_EPS$Institutions.6 == "Universite Paris-Saclay" | All_EPS$Institutions.7 == "Universite Paris-Saclay"
+                   | All_EPS$Institutions.8 == "Universite Paris-Saclay" | All_EPS$Institutions.9 == "Universite Paris-Saclay" | All_EPS$Institutions.10 == "Universite Paris-Saclay" | All_EPS$Institutions.11 == "Universite Paris-Saclay"
+                   | All_EPS$Institutions.12 == "Universite Paris-Saclay" | All_EPS$Institutions.13 == "Universite Paris-Saclay" | All_EPS$Institutions.14 == "Universite Paris-Saclay" | All_EPS$Institutions.15 == "Universite Paris-Saclay"
+                   | All_EPS$Institutions.16 == "Universite Paris-Saclay" | All_EPS$Institutions.17 == "Universite Paris-Saclay" | All_EPS$Institutions.18 == "Universite Paris-Saclay" ,]
+write.csv(EPS_Paris, file = "EPS_Paris.csv",)
+
+#Swiss Federal Institute of Technology Zurich
+EPS_SwissFI= All_EPS[All_EPS$Institutions.1 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.2 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.3 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.3.1 == "Swiss Federal Institute of Technology Zurich" |
+                     All_EPS$Institutions.4 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.5 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.6 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.7 == "Swiss Federal Institute of Technology Zurich"
+                   | All_EPS$Institutions.8 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.9 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.10 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.11 == "Swiss Federal Institute of Technology Zurich"
+                   | All_EPS$Institutions.12 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.13 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.14 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.15 == "Swiss Federal Institute of Technology Zurich"
+                   | All_EPS$Institutions.16 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.17 == "Swiss Federal Institute of Technology Zurich" | All_EPS$Institutions.18 == "Swiss Federal Institute of Technology Zurich" ,]
+write.csv(EPS_SwissFI, file = "EPS_SwissFI.csv",)
+
+#Zhejiang University
+
+EPS_Zhejiang= All_EPS[All_EPS$Institutions.1 == "Zhejiang University" | All_EPS$Institutions.2 == "Zhejiang University" | All_EPS$Institutions.3 == "Zhejiang University" | All_EPS$Institutions.3.1 == "Zhejiang University" |
+                       All_EPS$Institutions.4 == "Zhejiang University" | All_EPS$Institutions.5 == "Zhejiang University" | All_EPS$Institutions.6 == "Zhejiang University" | All_EPS$Institutions.7 == "Zhejiang University"
+                     | All_EPS$Institutions.8 == "Zhejiang University" | All_EPS$Institutions.9 == "Zhejiang University" | All_EPS$Institutions.10 == "Zhejiang University" | All_EPS$Institutions.11 == "Zhejiang University"
+                     | All_EPS$Institutions.12 == "Zhejiang University" | All_EPS$Institutions.13 == "Zhejiang University" | All_EPS$Institutions.14 == "Zhejiang University" | All_EPS$Institutions.15 == "Zhejiang University"
+                     | All_EPS$Institutions.16 == "Zhejiang University" | All_EPS$Institutions.17 == "Zhejiang University" | All_EPS$Institutions.18 == "Zhejiang University" ,]
+write.csv(EPS_Zhejiang, file = "EPS_Zhejiang.csv",)
+
+#Beihang University
+EPS_Beihang= All_EPS[All_EPS$Institutions.1 == "Beihang University" | All_EPS$Institutions.2 == "Beihang University" | All_EPS$Institutions.3 == "Beihang University" | All_EPS$Institutions.3.1 == "Beihang University" |
+                        All_EPS$Institutions.4 == "Beihang University" | All_EPS$Institutions.5 == "Beihang University" | All_EPS$Institutions.6 == "Beihang University" | All_EPS$Institutions.7 == "Beihang University"
+                      | All_EPS$Institutions.8 == "Beihang University" | All_EPS$Institutions.9 == "Beihang University" | All_EPS$Institutions.10 == "Beihang University" | All_EPS$Institutions.11 == "Beihang University"
+                      | All_EPS$Institutions.12 == "Beihang University" | All_EPS$Institutions.13 == "Beihang University" | All_EPS$Institutions.14 == "Beihang University" | All_EPS$Institutions.15 == "Beihang University"
+                      | All_EPS$Institutions.16 == "Beihang University" | All_EPS$Institutions.17 == "Beihang University" | All_EPS$Institutions.18 == "Beihang University" ,]
+write.csv(EPS_Beihang, file = "EPS_Beihang.csv",)
+
+
+#Chinese Academy of Sciences
+EPS_CAS= All_EPS[All_EPS$Institutions.1 == "Chinese Academy of Sciences" | All_EPS$Institutions.2 == "Chinese Academy of Sciences" | All_EPS$Institutions.3 == "Chinese Academy of Sciences" | All_EPS$Institutions.3.1 == "Chinese Academy of Sciences" |
+                       All_EPS$Institutions.4 == "Chinese Academy of Sciences" | All_EPS$Institutions.5 == "Chinese Academy of Sciences" | All_EPS$Institutions.6 == "Chinese Academy of Sciences" | All_EPS$Institutions.7 == "Chinese Academy of Sciences"
+                     | All_EPS$Institutions.8 == "Chinese Academy of Sciences" | All_EPS$Institutions.9 == "Chinese Academy of Sciences" | All_EPS$Institutions.10 == "Chinese Academy of Sciences" | All_EPS$Institutions.11 == "Chinese Academy of Sciences"
+                     | All_EPS$Institutions.12 == "Chinese Academy of Sciences" | All_EPS$Institutions.13 == "Chinese Academy of Sciences" | All_EPS$Institutions.14 == "Chinese Academy of Sciences" | All_EPS$Institutions.15 == "Chinese Academy of Sciences"
+                     | All_EPS$Institutions.16 == "Chinese Academy of Sciences" | All_EPS$Institutions.17 == "Chinese Academy of Sciences" | All_EPS$Institutions.18 == "Chinese Academy of Sciences" ,]
+write.csv(EPS_CAS, file = "EPS_CAS.csv",)
+
+#CNRS
+EPS_CNRS= All_EPS[All_EPS$Institutions.1 == "CNRS" | All_EPS$Institutions.2 == "CNRS" | All_EPS$Institutions.3 == "CNRS" | All_EPS$Institutions.3.1 == "CNRS" |
+                   All_EPS$Institutions.4 == "CNRS" | All_EPS$Institutions.5 == "CNRS" | All_EPS$Institutions.6 == "CNRS" | All_EPS$Institutions.7 == "CNRS"
+                 | All_EPS$Institutions.8 == "CNRS" | All_EPS$Institutions.9 == "CNRS" | All_EPS$Institutions.10 == "CNRS" | All_EPS$Institutions.11 == "CNRS"
+                 | All_EPS$Institutions.12 == "CNRS" | All_EPS$Institutions.13 == "CNRS" | All_EPS$Institutions.14 == "CNRS" | All_EPS$Institutions.15 == "CNRS"
+                 | All_EPS$Institutions.16 == "CNRS" | All_EPS$Institutions.17 == "CNRS" | All_EPS$Institutions.18 == "CNRS" ,]
+write.csv(EPS_CNRS, file = "EPS_CNRS.csv",)
+
+###environment 
+
+#Environmental Science , Earth and Planetary Sciences , 
+
+
+All_Envi = listings[listings$ASJC.B2 == "Environmental Science"| listings$ASJC.C2 == "Environmental Science"| listings$ASJC.D2 == "Environmental Science" | listings$ASJC.E2 == "Environmental Science" 
+                   | listings$ASJC.F2 == "Environmental Science" | listings$ASJC.G2 == "Environmental Science" | listings$ASJC.H2 == "Environmental Science" | listings$ASJC.I2 == "Environmental Science" 
+                   | listings$ASJC.J2 == "Environmental Science"| listings$ASJC.K2 == "Environmental Science" | listings$ASJC.L2 == "Environmental Science" | listings$ASJC.M2 == "Environmental Science"
+                   | listings$ASJC.N2 == "Environmental Science" | listings$ASJC.B2 == "Earth and Planetary Sciences"| listings$ASJC.C2 == "Earth and Planetary Sciences"| listings$ASJC.D2 == "Earth and Planetary Sciences" | listings$ASJC.E2 == "Earth and Planetary Sciences" 
+                   | listings$ASJC.F2 == "Earth and Planetary Sciences" | listings$ASJC.G2 == "Earth and Planetary Sciences" | listings$ASJC.H2 == "Earth and Planetary Sciences" | listings$ASJC.I2 == "Earth and Planetary Sciences" 
+                   | listings$ASJC.J2 == "Earth and Planetary Sciences"| listings$ASJC.K2 == "Earth and Planetary Sciences" | listings$ASJC.L2 == "Earth and Planetary Sciences" | listings$ASJC.M2 == "Earth and Planetary Sciences"
+                   | listings$ASJC.N2 == "Earth and Planetary Sciences",]
+write.csv(All_Envi, file = "All_Envi.csv",)
+
+#countries USA (1,573), China (1,143), France (823), Germany (671) and the Netherlands (415). 
+
+
+Envi_USA = All_Envi[All_Envi$country1 == "United States"|All_Envi$country2 == "United States"|All_Envi$country3 == "United States" |All_Envi$country4 == "United States" |All_Envi$country5 == "United States" 
+                  |All_Envi$country6 == "United States" |All_Envi$country7 == "United States" |All_Envi$country8 == "United States" |All_Envi$country9 == "United States",]
+write.csv(Envi_USA, file = "Envi_USA.csv",)
+
+#China
+Envi_China = All_Envi[All_Envi$country1 == "China"|All_Envi$country2 == "China"|All_Envi$country3 == "China" |All_Envi$country4 == "China" |All_Envi$country5 == "China" 
+                    |All_Envi$country6 == "China" |All_Envi$country7 == "China" |All_Envi$country8 == "China" |All_Envi$country9 == "China",]
+write.csv(Envi_China, file = "Envi_China.csv",) 
+
+
+#France
+Envi_France = All_Envi[All_Envi$country1 == "France"|All_Envi$country2 == "France"|All_Envi$country3 == "France" |All_Envi$country4 == "France" |All_Envi$country5 == "France" 
+                     |All_Envi$country6 == "France" |All_Envi$country7 == "France" |All_Envi$country8 == "France" |All_Envi$country9 == "France",]
+write.csv(Envi_France, file = "Envi_France.csv",)
+
+#Germany
+Envi_Germany = All_Envi[All_Envi$country1 == "Germany"|All_Envi$country2 == "Germany"|All_Envi$country3 == "Germany" |All_Envi$country4 == "Germany" |All_Envi$country5 == "Germany" 
+                       |All_Envi$country6 == "Germany" |All_Envi$country7 == "Germany" |All_Envi$country8 == "Germany" |All_Envi$country9 == "Germany",]
+write.csv(Envi_Germany, file = "Envi_Germany.csv",)
+
+#Netherlands
+Envi_Netherlands = All_Envi[All_Envi$country1 == "Netherlands"|All_Envi$country2 == "Netherlands"|All_Envi$country3 == "Netherlands" |All_Envi$country4 == "Netherlands" |All_Envi$country5 == "Netherlands" 
+                        |All_Envi$country6 == "Netherlands" |All_Envi$country7 == "Netherlands" |All_Envi$country8 == "Netherlands" |All_Envi$country9 == "Netherlands",]
+write.csv(Envi_Netherlands, file = "Envi_Netherlands.csv",)
+
+#### Institutions
+
+#Helmholtz Centre Potsdam - German Research Centre for Geosciences
+Envi_Helm= All_Envi[All_Envi$Institutions.1 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.2 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.3 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.3.1 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" |
+                     All_Envi$Institutions.4 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.5 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.6 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.7 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences"
+                   | All_Envi$Institutions.8 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.9 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.10 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.11 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences"
+                   | All_Envi$Institutions.12 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.13 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.14 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.15 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences"
+                   | All_Envi$Institutions.16 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.17 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" | All_Envi$Institutions.18 == "Helmholtz Centre Potsdam - German Research Centre for Geosciences" ,]
+write.csv(Envi_Helm, file = "Envi_Helm.csv",)
+
+#China University of Geosciences, Wuhan
+Envi_CUG= All_Envi[All_Envi$Institutions.1 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.2 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.3 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.3.1 == "China University of Geosciences, Wuhan" |
+                     All_Envi$Institutions.4 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.5 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.6 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.7 == "China University of Geosciences, Wuhan"
+                   | All_Envi$Institutions.8 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.9 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.10 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.11 == "China University of Geosciences, Wuhan"
+                   | All_Envi$Institutions.12 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.13 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.14 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.15 == "China University of Geosciences, Wuhan"
+                   | All_Envi$Institutions.16 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.17 == "China University of Geosciences, Wuhan" | All_Envi$Institutions.18 == "China University of Geosciences, Wuhan" ,]
+write.csv(Envi_CUG, file = "Envi_CUG.csv",)
+
+
+#Natural Resources Canada
+Envi_NRC= All_Envi[All_Envi$Institutions.1 == "Natural Resources Canada" | All_Envi$Institutions.2 == "Natural Resources Canada" | All_Envi$Institutions.3 == "Natural Resources Canada" | All_Envi$Institutions.3.1 == "Natural Resources Canada" |
+                     All_Envi$Institutions.4 == "Natural Resources Canada" | All_Envi$Institutions.5 == "Natural Resources Canada" | All_Envi$Institutions.6 == "Natural Resources Canada" | All_Envi$Institutions.7 == "Natural Resources Canada"
+                   | All_Envi$Institutions.8 == "Natural Resources Canada" | All_Envi$Institutions.9 == "Natural Resources Canada" | All_Envi$Institutions.10 == "Natural Resources Canada" | All_Envi$Institutions.11 == "Natural Resources Canada"
+                   | All_Envi$Institutions.12 == "Natural Resources Canada" | All_Envi$Institutions.13 == "Natural Resources Canada" | All_Envi$Institutions.14 == "Natural Resources Canada" | All_Envi$Institutions.15 == "Natural Resources Canada"
+                   | All_Envi$Institutions.16 == "Natural Resources Canada" | All_Envi$Institutions.17 == "Natural Resources Canada" | All_Envi$Institutions.18 == "Natural Resources Canada" ,]
+write.csv(Envi_NRC, file = "Envi_NRC.csv",)
+
+
+#CSIC
+Envi_CSIC= All_Envi[All_Envi$Institutions.1 == "CSIC" | All_Envi$Institutions.2 == "CSIC" | All_Envi$Institutions.3 == "CSIC" | All_Envi$Institutions.3.1 == "CSIC" |
+                     All_Envi$Institutions.4 == "CSIC" | All_Envi$Institutions.5 == "CSIC" | All_Envi$Institutions.6 == "CSIC" | All_Envi$Institutions.7 == "CSIC"
+                   | All_Envi$Institutions.8 == "CSIC" | All_Envi$Institutions.9 == "CSIC" | All_Envi$Institutions.10 == "CSIC" | All_Envi$Institutions.11 == "CSIC"
+                   | All_Envi$Institutions.12 == "CSIC" | All_Envi$Institutions.13 == "CSIC" | All_Envi$Institutions.14 == "CSIC" | All_Envi$Institutions.15 == "CSIC"
+                   | All_Envi$Institutions.16 == "CSIC" | All_Envi$Institutions.17 == "CSIC" | All_Envi$Institutions.18 == "CSIC" ,]
+write.csv(Envi_CSIC, file = "Envi_CSIC.csv",)
+
+#University of Colorado Boulder
+Envi_UCB= All_Envi[All_Envi$Institutions.1 == "University of Colorado Boulder" | All_Envi$Institutions.2 == "University of Colorado Boulder" | All_Envi$Institutions.3 == "University of Colorado Boulder" | All_Envi$Institutions.3.1 == "University of Colorado Boulder" |
+                      All_Envi$Institutions.4 == "University of Colorado Boulder" | All_Envi$Institutions.5 == "University of Colorado Boulder" | All_Envi$Institutions.6 == "University of Colorado Boulder" | All_Envi$Institutions.7 == "University of Colorado Boulder"
+                    | All_Envi$Institutions.8 == "University of Colorado Boulder" | All_Envi$Institutions.9 == "University of Colorado Boulder" | All_Envi$Institutions.10 == "University of Colorado Boulder" | All_Envi$Institutions.11 == "University of Colorado Boulder"
+                    | All_Envi$Institutions.12 == "University of Colorado Boulder" | All_Envi$Institutions.13 == "University of Colorado Boulder" | All_Envi$Institutions.14 == "University of Colorado Boulder" | All_Envi$Institutions.15 == "University of Colorado Boulder"
+                    | All_Envi$Institutions.16 == "University of Colorado Boulder" | All_Envi$Institutions.17 == "University of Colorado Boulder" | All_Envi$Institutions.18 == "University of Colorado Boulder" ,]
+write.csv(Envi_UCB, file = "Envi_UCB.csv",)
+
+#National Center for Atmospheric Research
+Envi_NCAR= All_Envi[All_Envi$Institutions.1 == "National Center for Atmospheric Research" | All_Envi$Institutions.2 == "National Center for Atmospheric Research" | All_Envi$Institutions.3 == "National Center for Atmospheric Research" | All_Envi$Institutions.3.1 == "National Center for Atmospheric Research" |
+                         All_Envi$Institutions.4 == "National Center for Atmospheric Research" | All_Envi$Institutions.5 == "National Center for Atmospheric Research" | All_Envi$Institutions.6 == "National Center for Atmospheric Research" | All_Envi$Institutions.7 == "National Center for Atmospheric Research"
+                       | All_Envi$Institutions.8 == "National Center for Atmospheric Research" | All_Envi$Institutions.9 == "National Center for Atmospheric Research" | All_Envi$Institutions.10 == "National Center for Atmospheric Research" | All_Envi$Institutions.11 == "National Center for Atmospheric Research"
+                       | All_Envi$Institutions.12 == "National Center for Atmospheric Research" | All_Envi$Institutions.13 == "National Center for Atmospheric Research" | All_Envi$Institutions.14 == "National Center for Atmospheric Research" | All_Envi$Institutions.15 == "National Center for Atmospheric Research"
+                       | All_Envi$Institutions.16 == "National Center for Atmospheric Research" | All_Envi$Institutions.17 == "National Center for Atmospheric Research" | All_Envi$Institutions.18 == "National Center for Atmospheric Research" ,]
+write.csv(Envi_NCAR, file = "Envi_NCAR.csv",)
+
+#Swiss Federal Institute of Technology Zurich
+Envi_SwissFI= All_Envi[All_Envi$Institutions.1 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.2 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.3 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.3.1 == "Swiss Federal Institute of Technology Zurich" |
+                         All_Envi$Institutions.4 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.5 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.6 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.7 == "Swiss Federal Institute of Technology Zurich"
+                       | All_Envi$Institutions.8 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.9 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.10 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.11 == "Swiss Federal Institute of Technology Zurich"
+                       | All_Envi$Institutions.12 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.13 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.14 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.15 == "Swiss Federal Institute of Technology Zurich"
+                       | All_Envi$Institutions.16 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.17 == "Swiss Federal Institute of Technology Zurich" | All_Envi$Institutions.18 == "Swiss Federal Institute of Technology Zurich" ,]
+write.csv(Envi_SwissFI, file = "Envi_SwissFI.csv",)
+
+#Utrecht University
+Envi_Utrecht= All_Envi[All_Envi$Institutions.1 == "Utrecht University" | All_Envi$Institutions.2 == "Utrecht University" | All_Envi$Institutions.3 == "Utrecht University" | All_Envi$Institutions.3.1 == "Utrecht University" |
+                     All_Envi$Institutions.4 == "Utrecht University" | All_Envi$Institutions.5 == "Utrecht University" | All_Envi$Institutions.6 == "Utrecht University" | All_Envi$Institutions.7 == "Utrecht University"
+                   | All_Envi$Institutions.8 == "Utrecht University" | All_Envi$Institutions.9 == "Utrecht University" | All_Envi$Institutions.10 == "Utrecht University" | All_Envi$Institutions.11 == "Utrecht University"
+                   | All_Envi$Institutions.12 == "Utrecht University" | All_Envi$Institutions.13 == "Utrecht University" | All_Envi$Institutions.14 == "Utrecht University" | All_Envi$Institutions.15 == "Utrecht University"
+                   | All_Envi$Institutions.16 == "Utrecht University" | All_Envi$Institutions.17 == "Utrecht University" | All_Envi$Institutions.18 == "Utrecht University" ,]
+write.csv(Envi_Utrecht, file = "Envi_Utrecht.csv",)
+
+
+#Chinese Academy of Sciences
+Envi_CAS= All_Envi[All_Envi$Institutions.1 == "Chinese Academy of Sciences" | All_Envi$Institutions.2 == "Chinese Academy of Sciences" | All_Envi$Institutions.3 == "Chinese Academy of Sciences" | All_Envi$Institutions.3.1 == "Chinese Academy of Sciences" |
+                      All_Envi$Institutions.4 == "Chinese Academy of Sciences" | All_Envi$Institutions.5 == "Chinese Academy of Sciences" | All_Envi$Institutions.6 == "Chinese Academy of Sciences" | All_Envi$Institutions.7 == "Chinese Academy of Sciences"
+                    | All_Envi$Institutions.8 == "Chinese Academy of Sciences" | All_Envi$Institutions.9 == "Chinese Academy of Sciences" | All_Envi$Institutions.10 == "Chinese Academy of Sciences" | All_Envi$Institutions.11 == "Chinese Academy of Sciences"
+                    | All_Envi$Institutions.12 == "Chinese Academy of Sciences" | All_Envi$Institutions.13 == "Chinese Academy of Sciences" | All_Envi$Institutions.14 == "Chinese Academy of Sciences" | All_Envi$Institutions.15 == "Chinese Academy of Sciences"
+                    | All_Envi$Institutions.16 == "Chinese Academy of Sciences" | All_Envi$Institutions.17 == "Chinese Academy of Sciences" | All_Envi$Institutions.18 == "Chinese Academy of Sciences" ,]
+write.csv(Envi_CAS, file = "Envi_CAS.csv",)
+
+
+
+#CNRS
+Envi_CNRS= All_Envi[All_Envi$Institutions.1 == "CNRS" | All_Envi$Institutions.2 == "CNRS" | All_Envi$Institutions.3 == "CNRS" | All_Envi$Institutions.3.1 == "CNRS" |
+                    All_Envi$Institutions.4 == "CNRS" | All_Envi$Institutions.5 == "CNRS" | All_Envi$Institutions.6 == "CNRS" | All_Envi$Institutions.7 == "CNRS"
+                  | All_Envi$Institutions.8 == "CNRS" | All_Envi$Institutions.9 == "CNRS" | All_Envi$Institutions.10 == "CNRS" | All_Envi$Institutions.11 == "CNRS"
+                  | All_Envi$Institutions.12 == "CNRS" | All_Envi$Institutions.13 == "CNRS" | All_Envi$Institutions.14 == "CNRS" | All_Envi$Institutions.15 == "CNRS"
+                  | All_Envi$Institutions.16 == "CNRS" | All_Envi$Institutions.17 == "CNRS" | All_Envi$Institutions.18 == "CNRS" ,]
+write.csv(Envi_CNRS, file = "Envi_CNRS.csv",)
+
+
+
+###faculty of medicine and health
+#Psychology
+#Neuroscience
+#Nursing
+#Medicine
+#Dentistry
+#Health Professions
+#Veterinary
+
+All_medh = listings[listings$ASJC.B2 == "Psychology"| listings$ASJC.C2 == "Psychology"| listings$ASJC.D2 == "Psychology" | listings$ASJC.E2 == "Psychology" 
+                    | listings$ASJC.F2 == "Psychology" | listings$ASJC.G2 == "Psychology" | listings$ASJC.H2 == "Psychology" | listings$ASJC.I2 == "Psychology" 
+                    | listings$ASJC.J2 == "Psychology"| listings$ASJC.K2 == "Psychology" | listings$ASJC.L2 == "Psychology" | listings$ASJC.M2 == "Psychology"
+                    | listings$ASJC.N2 == "Psychology" | listings$ASJC.B2 == "Neuroscience"| listings$ASJC.C2 == "Neuroscience"| listings$ASJC.D2 == "Neuroscience" | listings$ASJC.E2 == "Neuroscience" 
+                    | listings$ASJC.F2 == "Neuroscience" | listings$ASJC.G2 == "Neuroscience" | listings$ASJC.H2 == "Neuroscience" | listings$ASJC.I2 == "Neuroscience" 
+                    | listings$ASJC.J2 == "Neuroscience"| listings$ASJC.K2 == "Neuroscience" | listings$ASJC.L2 == "Neuroscience" | listings$ASJC.M2 == "Neuroscience"
+                    | listings$ASJC.N2 == "Neuroscience"| listings$ASJC.B2 == "Nursing"| listings$ASJC.C2 == "Nursing"| listings$ASJC.D2 == "Nursing" | listings$ASJC.E2 == "Nursing" 
+                    | listings$ASJC.F2 == "Nursing" | listings$ASJC.G2 == "Nursing" | listings$ASJC.H2 == "Nursing" | listings$ASJC.I2 == "Nursing" 
+                    | listings$ASJC.J2 == "Nursing"| listings$ASJC.K2 == "Nursing" | listings$ASJC.L2 == "Nursing" | listings$ASJC.M2 == "Nursing"
+                    | listings$ASJC.N2 == "Nursing" | listings$ASJC.B2 == "Medicine"| listings$ASJC.C2 == "Medicine"| listings$ASJC.D2 == "Medicine" | listings$ASJC.E2 == "Medicine" 
+                    | listings$ASJC.F2 == "Medicine" | listings$ASJC.G2 == "Medicine" | listings$ASJC.H2 == "Medicine" | listings$ASJC.I2 == "Medicine" 
+                    | listings$ASJC.J2 == "Medicine"| listings$ASJC.K2 == "Medicine" | listings$ASJC.L2 == "Medicine" | listings$ASJC.M2 == "Medicine"
+                    | listings$ASJC.N2 == "Medicine"| listings$ASJC.B2 == "Dentistry"| listings$ASJC.C2 == "Dentistry"| listings$ASJC.D2 == "Dentistry" | listings$ASJC.E2 == "Dentistry" 
+                    | listings$ASJC.F2 == "Dentistry" | listings$ASJC.G2 == "Dentistry" | listings$ASJC.H2 == "Dentistry" | listings$ASJC.I2 == "Dentistry" 
+                    | listings$ASJC.J2 == "Dentistry"| listings$ASJC.K2 == "Dentistry" | listings$ASJC.L2 == "Dentistry" | listings$ASJC.M2 == "Dentistry"
+                    | listings$ASJC.N2 == "Dentistry"| listings$ASJC.B2 == "Health Professions"| listings$ASJC.C2 == "Health Professions"| listings$ASJC.D2 == "Health Professions" | listings$ASJC.E2 == "Health Professions" 
+                    | listings$ASJC.F2 == "Health Professions" | listings$ASJC.G2 == "Health Professions" | listings$ASJC.H2 == "Health Professions" | listings$ASJC.I2 == "Health Professions" 
+                    | listings$ASJC.J2 == "Health Professions"| listings$ASJC.K2 == "Health Professions" | listings$ASJC.L2 == "Health Professions" | listings$ASJC.M2 == "Health Professions"
+                    | listings$ASJC.N2 == "Health Professions"| listings$ASJC.B2 == "Veterinary"| listings$ASJC.C2 == "Veterinary"| listings$ASJC.D2 == "Veterinary" | listings$ASJC.E2 == "Veterinary" 
+                    | listings$ASJC.F2 == "Veterinary" | listings$ASJC.G2 == "Veterinary" | listings$ASJC.H2 == "Veterinary" | listings$ASJC.I2 == "Veterinary" 
+                    | listings$ASJC.J2 == "Veterinary"| listings$ASJC.K2 == "Veterinary" | listings$ASJC.L2 == "Veterinary" | listings$ASJC.M2 == "Veterinary"
+                    | listings$ASJC.N2 == "Veterinary" ,]
+write.csv(All_medh, file = "All_medh.csv",)
+
+
+
+###Countries
+#USA
+medh_USA = All_medh[All_medh$country1 == "United States"|All_medh$country2 == "United States"|All_medh$country3 == "United States" |All_medh$country4 == "United States" |All_medh$country5 == "United States" 
+                  |All_medh$country6 == "United States" |All_medh$country7 == "United States" |All_medh$country8 == "United States" |All_medh$country9 == "United States",]
+write.csv(medh_USA, file = "medh_USA.csv",)
+#Australia
+medh_AUS = All_medh[All_medh$country1 == "Australia"|All_medh$country2 == "Australia"|All_medh$country3 == "Australia" |All_medh$country4 == "Australia" |All_medh$country5 == "Australia" 
+                    |All_medh$country6 == "Australia" |All_medh$country7 == "Australia" |All_medh$country8 == "Australia" |All_medh$country9 == "Australia",]
+write.csv(medh_AUS, file = "medh_AUS.csv",)
+
+#France
+medh_Fra = All_medh[All_medh$country1 == "France"|All_medh$country2 == "France"|All_medh$country3 == "France" |All_medh$country4 == "France" |All_medh$country5 == "France" 
+                    |All_medh$country6 == "France" |All_medh$country7 == "France" |All_medh$country8 == "France" |All_medh$country9 == "France",]
+write.csv(medh_Fra, file = "medh_France.csv",)
+
+#canada
+medh_Canada = All_medh[All_medh$country1 == "Canada"|All_medh$country2 == "Canada"|All_medh$country3 == "Canada" |All_medh$country4 == "Canada" |All_medh$country5 == "Canada" 
+                    |All_medh$country6 == "Canada" |All_medh$country7 == "Canada" |All_medh$country8 == "Canada" |All_medh$country9 == "Canada",]
+write.csv(medh_Canada, file = "medh_Canada.csv",)
+
+#Ntherlands
+medh_Netherlands = All_medh[All_medh$country1 == "Netherlands"|All_medh$country2 == "Netherlands"|All_medh$country3 == "Netherlands" |All_medh$country4 == "Netherlands" |All_medh$country5 == "Netherlands" 
+                       |All_medh$country6 == "Netherlands" |All_medh$country7 == "Netherlands" |All_medh$country8 == "Netherlands" |All_medh$country9 == "Netherlands",]
+write.csv(medh_Netherlands, file = "medh_Netherlands.csv",)
+
+
+#Institutions
+#Karolinska Institutet
+medh_Karol= All_medh[All_medh$Institutions.1 == "Karolinska Institutet" | All_medh$Institutions.2 == "Karolinska Institutet" | All_medh$Institutions.3 == "Karolinska Institutet" | All_medh$Institutions.3.1 == "Karolinska Institutet" |
+                      All_medh$Institutions.4 == "Karolinska Institutet" | All_medh$Institutions.5 == "Karolinska Institutet" | All_medh$Institutions.6 == "Karolinska Institutet" | All_medh$Institutions.7 == "Karolinska Institutet"
+                    | All_medh$Institutions.8 == "Karolinska Institutet" | All_medh$Institutions.9 == "Karolinska Institutet" | All_medh$Institutions.10 == "Karolinska Institutet" | All_medh$Institutions.11 == "Karolinska Institutet"
+                    | All_medh$Institutions.12 == "Karolinska Institutet" | All_medh$Institutions.13 == "Karolinska Institutet" | All_medh$Institutions.14 == "Karolinska Institutet" | All_medh$Institutions.15 == "Karolinska Institutet"
+                    | All_medh$Institutions.16 == "Karolinska Institutet" | All_medh$Institutions.17 == "Karolinska Institutet" | All_medh$Institutions.18 == "Karolinska Institutet" ,]
+write.csv(medh_Karol, file = "medh_karol.csv",)
+
+#The University of Auckland
+medh_Auck= All_medh[All_medh$Institutions.1 == "The University of Auckland" | All_medh$Institutions.2 == "The University of Auckland" | All_medh$Institutions.3 == "The University of Auckland" | All_medh$Institutions.3.1 == "The University of Auckland" |
+                       All_medh$Institutions.4 == "The University of Auckland" | All_medh$Institutions.5 == "The University of Auckland" | All_medh$Institutions.6 == "The University of Auckland" | All_medh$Institutions.7 == "The University of Auckland"
+                     | All_medh$Institutions.8 == "The University of Auckland" | All_medh$Institutions.9 == "The University of Auckland" | All_medh$Institutions.10 == "The University of Auckland" | All_medh$Institutions.11 == "The University of Auckland"
+                     | All_medh$Institutions.12 == "The University of Auckland" | All_medh$Institutions.13 == "The University of Auckland" | All_medh$Institutions.14 == "The University of Auckland" | All_medh$Institutions.15 == "The University of Auckland"
+                     | All_medh$Institutions.16 == "The University of Auckland" | All_medh$Institutions.17 == "The University of Auckland" | All_medh$Institutions.18 == "The University of Auckland" ,]
+write.csv(medh_Auck, file = "medh_Auck.csv",)
+
+#University of Melbourne
+medh_Mel= All_medh[All_medh$Institutions.1 == "University of Melbourne" | All_medh$Institutions.2 == "University of Melbourne" | All_medh$Institutions.3 == "University of Melbourne" | All_medh$Institutions.3.1 == "University of Melbourne" |
+                      All_medh$Institutions.4 == "University of Melbourne" | All_medh$Institutions.5 == "University of Melbourne" | All_medh$Institutions.6 == "University of Melbourne" | All_medh$Institutions.7 == "University of Melbourne"
+                    | All_medh$Institutions.8 == "University of Melbourne" | All_medh$Institutions.9 == "University of Melbourne" | All_medh$Institutions.10 == "University of Melbourne" | All_medh$Institutions.11 == "University of Melbourne"
+                    | All_medh$Institutions.12 == "University of Melbourne" | All_medh$Institutions.13 == "University of Melbourne" | All_medh$Institutions.14 == "University of Melbourne" | All_medh$Institutions.15 == "University of Melbourne"
+                    | All_medh$Institutions.16 == "University of Melbourne" | All_medh$Institutions.17 == "University of Melbourne" | All_medh$Institutions.18 == "University of Melbourne" ,]
+write.csv(medh_Mel, file = "medh_Mel.csv",)
+
+#McMaster University
+medh_mcmaster= All_medh[All_medh$Institutions.1 == "McMaster University" | All_medh$Institutions.2 == "McMaster University" | All_medh$Institutions.3 == "McMaster University" | All_medh$Institutions.3.1 == "McMaster University" |
+                     All_medh$Institutions.4 == "McMaster University" | All_medh$Institutions.5 == "McMaster University" | All_medh$Institutions.6 == "McMaster University" | All_medh$Institutions.7 == "McMaster University"
+                   | All_medh$Institutions.8 == "McMaster University" | All_medh$Institutions.9 == "McMaster University" | All_medh$Institutions.10 == "McMaster University" | All_medh$Institutions.11 == "McMaster University"
+                   | All_medh$Institutions.12 == "McMaster University" | All_medh$Institutions.13 == "McMaster University" | All_medh$Institutions.14 == "McMaster University" | All_medh$Institutions.15 == "McMaster University"
+                   | All_medh$Institutions.16 == "McMaster University" | All_medh$Institutions.17 == "McMaster University" | All_medh$Institutions.18 == "McMaster University" ,]
+write.csv(medh_mcmaster, file = "medh_mcmaster.csv",)
+
+#Leiden University
+medh_Leiden= All_medh[All_medh$Institutions.1 == "Leiden University" | All_medh$Institutions.2 == "Leiden University" | All_medh$Institutions.3 == "Leiden University" | All_medh$Institutions.3.1 == "Leiden University" |
+                          All_medh$Institutions.4 == "Leiden University" | All_medh$Institutions.5 == "Leiden University" | All_medh$Institutions.6 == "Leiden University" | All_medh$Institutions.7 == "Leiden University"
+                        | All_medh$Institutions.8 == "Leiden University" | All_medh$Institutions.9 == "Leiden University" | All_medh$Institutions.10 == "Leiden University" | All_medh$Institutions.11 == "Leiden University"
+                        | All_medh$Institutions.12 == "Leiden University" | All_medh$Institutions.13 == "Leiden University" | All_medh$Institutions.14 == "Leiden University" | All_medh$Institutions.15 == "Leiden University"
+                        | All_medh$Institutions.16 == "Leiden University" | All_medh$Institutions.17 == "Leiden University" | All_medh$Institutions.18 == "Leiden University" ,]
+write.csv(medh_Leiden, file = "medh_Leiden.csv",)
+
+#Norwegian University of Science and Technology
+medh_Nor= All_medh[All_medh$Institutions.1 == "Norwegian University of Science and Technology" | All_medh$Institutions.2 == "Norwegian University of Science and Technology" | All_medh$Institutions.3 == "Norwegian University of Science and Technology" | All_medh$Institutions.3.1 == "Norwegian University of Science and Technology" |
+                        All_medh$Institutions.4 == "Norwegian University of Science and Technology" | All_medh$Institutions.5 == "Norwegian University of Science and Technology" | All_medh$Institutions.6 == "Norwegian University of Science and Technology" | All_medh$Institutions.7 == "Norwegian University of Science and Technology"
+                      | All_medh$Institutions.8 == "Norwegian University of Science and Technology" | All_medh$Institutions.9 == "Norwegian University of Science and Technology" | All_medh$Institutions.10 == "Norwegian University of Science and Technology" | All_medh$Institutions.11 == "Norwegian University of Science and Technology"
+                      | All_medh$Institutions.12 == "Norwegian University of Science and Technology" | All_medh$Institutions.13 == "Norwegian University of Science and Technology" | All_medh$Institutions.14 == "Norwegian University of Science and Technology" | All_medh$Institutions.15 == "Norwegian University of Science and Technology"
+                      | All_medh$Institutions.16 == "Norwegian University of Science and Technology" | All_medh$Institutions.17 == "Norwegian University of Science and Technology" | All_medh$Institutions.18 == "Norwegian University of Science and Technology" ,]
+write.csv(medh_Nor, file = "medh_Nor.csv",)
+
+#University of Toronto
+medh_Tor= All_medh[All_medh$Institutions.1 == "University of Toronto" | All_medh$Institutions.2 == "University of Toronto" | All_medh$Institutions.3 == "University of Toronto" | All_medh$Institutions.3.1 == "University of Toronto" |
+                     All_medh$Institutions.4 == "University of Toronto" | All_medh$Institutions.5 == "University of Toronto" | All_medh$Institutions.6 == "University of Toronto" | All_medh$Institutions.7 == "University of Toronto"
+                   | All_medh$Institutions.8 == "University of Toronto" | All_medh$Institutions.9 == "University of Toronto" | All_medh$Institutions.10 == "University of Toronto" | All_medh$Institutions.11 == "University of Toronto"
+                   | All_medh$Institutions.12 == "University of Toronto" | All_medh$Institutions.13 == "University of Toronto" | All_medh$Institutions.14 == "University of Toronto" | All_medh$Institutions.15 == "University of Toronto"
+                   | All_medh$Institutions.16 == "University of Toronto" | All_medh$Institutions.17 == "University of Toronto" | All_medh$Institutions.18 == "University of Toronto" ,]
+write.csv(medh_Tor, file = "medh_Tor.csv",)
+
+#University of Copenhagen
+medh_Copen= All_medh[All_medh$Institutions.1 == "University of Copenhagen" | All_medh$Institutions.2 == "University of Copenhagen" | All_medh$Institutions.3 == "University of Copenhagen" | All_medh$Institutions.3.1 == "University of Copenhagen" |
+                     All_medh$Institutions.4 == "University of Copenhagen" | All_medh$Institutions.5 == "University of Copenhagen" | All_medh$Institutions.6 == "University of Copenhagen" | All_medh$Institutions.7 == "University of Copenhagen"
+                   | All_medh$Institutions.8 == "University of Copenhagen" | All_medh$Institutions.9 == "University of Copenhagen" | All_medh$Institutions.10 == "University of Copenhagen" | All_medh$Institutions.11 == "University of Copenhagen"
+                   | All_medh$Institutions.12 == "University of Copenhagen" | All_medh$Institutions.13 == "University of Copenhagen" | All_medh$Institutions.14 == "University of Copenhagen" | All_medh$Institutions.15 == "University of Copenhagen"
+                   | All_medh$Institutions.16 == "University of Copenhagen" | All_medh$Institutions.17 == "University of Copenhagen" | All_medh$Institutions.18 == "University of Copenhagen" ,]
+write.csv(medh_Copen, file = "medh_Copen.csv",)
+
+#University of Sydney
+medh_Syd= All_medh[All_medh$Institutions.1 == "University of Sydney" | All_medh$Institutions.2 == "University of Sydney" | All_medh$Institutions.3 == "University of Sydney" | All_medh$Institutions.3.1 == "University of Sydney" |
+                       All_medh$Institutions.4 == "University of Sydney" | All_medh$Institutions.5 == "University of Sydney" | All_medh$Institutions.6 == "University of Sydney" | All_medh$Institutions.7 == "University of Sydney"
+                     | All_medh$Institutions.8 == "University of Sydney" | All_medh$Institutions.9 == "University of Sydney" | All_medh$Institutions.10 == "University of Sydney" | All_medh$Institutions.11 == "University of Sydney"
+                     | All_medh$Institutions.12 == "University of Sydney" | All_medh$Institutions.13 == "University of Sydney" | All_medh$Institutions.14 == "University of Sydney" | All_medh$Institutions.15 == "University of Sydney"
+                     | All_medh$Institutions.16 == "University of Sydney" | All_medh$Institutions.17 == "University of Sydney" | All_medh$Institutions.18 == "University of Sydney" ,]
+write.csv(medh_Syd, file = "medh_Syd.csv",)
+
+
+#Harvard University
+medh_Harv= All_medh[All_medh$Institutions.1 == "Harvard University" | All_medh$Institutions.2 == "Harvard University" | All_medh$Institutions.3 == "Harvard University" | All_medh$Institutions.3.1 == "Harvard University" |
+                     All_medh$Institutions.4 == "Harvard University" | All_medh$Institutions.5 == "Harvard University" | All_medh$Institutions.6 == "Harvard University" | All_medh$Institutions.7 == "Harvard University"
+                   | All_medh$Institutions.8 == "Harvard University" | All_medh$Institutions.9 == "Harvard University" | All_medh$Institutions.10 == "Harvard University" | All_medh$Institutions.11 == "Harvard University"
+                   | All_medh$Institutions.12 == "Harvard University" | All_medh$Institutions.13 == "Harvard University" | All_medh$Institutions.14 == "Harvard University" | All_medh$Institutions.15 == "Harvard University"
+                   | All_medh$Institutions.16 == "Harvard University" | All_medh$Institutions.17 == "Harvard University" | All_medh$Institutions.18 == "Harvard University" ,]
+write.csv(medh_Harv, file = "medh_Harv.csv",)
+
+
+####Social Sciences
+#Social Science
+
+All_SS = listings[listings$ASJC.B2 == "Social Sciences"| listings$ASJC.C2 == "Social Sciences"| listings$ASJC.D2 == "Social Sciences" | listings$ASJC.E2 == "Social Sciences" 
+                    | listings$ASJC.F2 == "Social Sciences" | listings$ASJC.G2 == "Social Sciences" | listings$ASJC.H2 == "Social Sciences" | listings$ASJC.I2 == "Social Sciences" 
+                    | listings$ASJC.J2 == "Social Sciences"| listings$ASJC.K2 == "Social Sciences" | listings$ASJC.L2 == "Social Sciences" | listings$ASJC.M2 == "Social Sciences"
+                    | listings$ASJC.N2 == "Social Sciences",]
+write.csv(All_SS, file = "All_SS.csv",)
+
+
+###Institutes
+
+#Australian National University
+SS_ANU= All_SS[All_SS$Institutions.1 == "Australian National University" | All_SS$Institutions.2 == "Australian National University" | All_SS$Institutions.3 == "Australian National University" | All_SS$Institutions.3.1 == "Australian National University" |
+                      All_SS$Institutions.4 == "Australian National University" | All_SS$Institutions.5 == "Australian National University" | All_SS$Institutions.6 == "Australian National University" | All_SS$Institutions.7 == "Australian National University"
+                    | All_SS$Institutions.8 == "Australian National University" | All_SS$Institutions.9 == "Australian National University" | All_SS$Institutions.10 == "Australian National University" | All_SS$Institutions.11 == "Australian National University"
+                    | All_SS$Institutions.12 == "Australian National University" | All_SS$Institutions.13 == "Australian National University" | All_SS$Institutions.14 == "Australian National University" | All_SS$Institutions.15 == "Australian National University"
+                    | All_SS$Institutions.16 == "Australian National University" | All_SS$Institutions.17 == "Australian National University" | All_SS$Institutions.18 == "Australian National University" ,]
+write.csv(SS_ANU, file = "SS_ANU.csv",)
+
+#Norwegian University of Science and Technology
+SS_NorUST = All_SS[All_SS$Institutions.1 == "Norwegian University of Science and Technology" | All_SS$Institutions.2 == "Norwegian University of Science and Technology" | All_SS$Institutions.3 == "Norwegian University of Science and Technology" | All_SS$Institutions.3.1 == "Norwegian University of Science and Technology" |
+                 All_SS$Institutions.4 == "Norwegian University of Science and Technology" | All_SS$Institutions.5 == "Norwegian University of Science and Technology" | All_SS$Institutions.6 == "Norwegian University of Science and Technology" | All_SS$Institutions.7 == "Norwegian University of Science and Technology"
+               | All_SS$Institutions.8 == "Norwegian University of Science and Technology" | All_SS$Institutions.9 == "Norwegian University of Science and Technology" | All_SS$Institutions.10 == "Norwegian University of Science and Technology" | All_SS$Institutions.11 == "Norwegian University of Science and Technology"
+               | All_SS$Institutions.12 == "Norwegian University of Science and Technology" | All_SS$Institutions.13 == "Norwegian University of Science and Technology" | All_SS$Institutions.14 == "Norwegian University of Science and Technology" | All_SS$Institutions.15 == "Norwegian University of Science and Technology"
+               | All_SS$Institutions.16 == "Norwegian University of Science and Technology" | All_SS$Institutions.17 == "Norwegian University of Science and Technology" | All_SS$Institutions.18 == "Norwegian University of Science and Technology" ,]
+write.csv(SS_NorUST, file = "SS_NorUST.csv",)
+
+#University of Groningen
+SS_Groningen = All_SS[All_SS$Institutions.1 == "University of Groningen" | All_SS$Institutions.2 == "University of Groningen" | All_SS$Institutions.3 == "University of Groningen" | All_SS$Institutions.3.1 == "University of Groningen" |
+                     All_SS$Institutions.4 == "University of Groningen" | All_SS$Institutions.5 == "University of Groningen" | All_SS$Institutions.6 == "University of Groningen" | All_SS$Institutions.7 == "University of Groningen"
+                   | All_SS$Institutions.8 == "University of Groningen" | All_SS$Institutions.9 == "University of Groningen" | All_SS$Institutions.10 == "University of Groningen" | All_SS$Institutions.11 == "University of Groningen"
+                   | All_SS$Institutions.12 == "University of Groningen" | All_SS$Institutions.13 == "University of Groningen" | All_SS$Institutions.14 == "University of Groningen" | All_SS$Institutions.15 == "University of Groningen"
+                   | All_SS$Institutions.16 == "University of Groningen" | All_SS$Institutions.17 == "University of Groningen" | All_SS$Institutions.18 == "University of Groningen" ,]
+write.csv(SS_Groningen, file = "SS_Groningen.csv",)
+
+#Wageningen University & Research
+SS_Wageningen = All_SS[All_SS$Institutions.1 == "Wageningen University & Research" | All_SS$Institutions.2 == "Wageningen University & Research" | All_SS$Institutions.3 == "Wageningen University & Research" | All_SS$Institutions.3.1 == "Wageningen University & Research" |
+                        All_SS$Institutions.4 == "Wageningen University & Research" | All_SS$Institutions.5 == "Wageningen University & Research" | All_SS$Institutions.6 == "Wageningen University & Research" | All_SS$Institutions.7 == "Wageningen University & Research"
+                      | All_SS$Institutions.8 == "Wageningen University & Research" | All_SS$Institutions.9 == "Wageningen University & Research" | All_SS$Institutions.10 == "Wageningen University & Research" | All_SS$Institutions.11 == "Wageningen University & Research"
+                      | All_SS$Institutions.12 == "Wageningen University & Research" | All_SS$Institutions.13 == "Wageningen University & Research" | All_SS$Institutions.14 == "Wageningen University & Research" | All_SS$Institutions.15 == "Wageningen University & Research"
+                      | All_SS$Institutions.16 == "Wageningen University & Research" | All_SS$Institutions.17 == "Wageningen University & Research" | All_SS$Institutions.18 == "Wageningen University & Research" ,]
+write.csv(SS_Wageningen, file = "SS_Wageningen.csv",)
+
+#Delft University of Technology
+SS_Delft = All_SS[All_SS$Institutions.1 == "Delft University of Technology" | All_SS$Institutions.2 == "Delft University of Technology" | All_SS$Institutions.3 == "Delft University of Technology" | All_SS$Institutions.3.1 == "Delft University of Technology" |
+                         All_SS$Institutions.4 == "Delft University of Technology" | All_SS$Institutions.5 == "Delft University of Technology" | All_SS$Institutions.6 == "Delft University of Technology" | All_SS$Institutions.7 == "Delft University of Technology"
+                       | All_SS$Institutions.8 == "Delft University of Technology" | All_SS$Institutions.9 == "Delft University of Technology" | All_SS$Institutions.10 == "Delft University of Technology" | All_SS$Institutions.11 == "Delft University of Technology"
+                       | All_SS$Institutions.12 == "Delft University of Technology" | All_SS$Institutions.13 == "Delft University of Technology" | All_SS$Institutions.14 == "Delft University of Technology" | All_SS$Institutions.15 == "Delft University of Technology"
+                       | All_SS$Institutions.16 == "Delft University of Technology" | All_SS$Institutions.17 == "Delft University of Technology" | All_SS$Institutions.18 == "Delft University of Technology" ,]
+write.csv(SS_Delft, file = "SS_Delft.csv",)
+
+#University of Granada
+SS_Granada = All_SS[All_SS$Institutions.1 == "University of Granada" | All_SS$Institutions.2 == "University of Granada" | All_SS$Institutions.3 == "University of Granada" | All_SS$Institutions.3.1 == "University of Granada" |
+                    All_SS$Institutions.4 == "University of Granada" | All_SS$Institutions.5 == "University of Granada" | All_SS$Institutions.6 == "University of Granada" | All_SS$Institutions.7 == "University of Granada"
+                  | All_SS$Institutions.8 == "University of Granada" | All_SS$Institutions.9 == "University of Granada" | All_SS$Institutions.10 == "University of Granada" | All_SS$Institutions.11 == "University of Granada"
+                  | All_SS$Institutions.12 == "University of Granada" | All_SS$Institutions.13 == "University of Granada" | All_SS$Institutions.14 == "University of Granada" | All_SS$Institutions.15 == "University of Granada"
+                  | All_SS$Institutions.16 == "University of Granada" | All_SS$Institutions.17 == "University of Granada" | All_SS$Institutions.18 == "University of Granada" ,]
+write.csv(SS_Granada, file = "SS_Granada.csv",)
+
+#McGill University
+SS_Mcgill = All_SS[All_SS$Institutions.1 == "McGill University" | All_SS$Institutions.2 == "Mcgill University" | All_SS$Institutions.3 == "Mcgill University" | All_SS$Institutions.3.1 == "Mcgill University" |
+                      All_SS$Institutions.4 == "Mcgill University" | All_SS$Institutions.5 == "Mcgill University" | All_SS$Institutions.6 == "Mcgill University" | All_SS$Institutions.7 == "Mcgill University"
+                    | All_SS$Institutions.8 == "Mcgill University" | All_SS$Institutions.9 == "Mcgill University" | All_SS$Institutions.10 == "Mcgill University" | All_SS$Institutions.11 == "Mcgill University"
+                    | All_SS$Institutions.12 == "Mcgill University" | All_SS$Institutions.13 == "Mcgill University" | All_SS$Institutions.14 == "Mcgill University" | All_SS$Institutions.15 == "Mcgill University"
+                    | All_SS$Institutions.16 == "Mcgill University" | All_SS$Institutions.17 == "Mcgill University" | All_SS$Institutions.18 == "Mcgill University",]
+write.csv(SS_Mcgill, file = "SS_Mcgill.csv",)
+
+#Beijing Jiaotong University
+SS_Beijing = All_SS[All_SS$Institutions.1 == "Beijing Jiaotong University" | All_SS$Institutions.2 == "Beijing Jiaotong University" | All_SS$Institutions.3 == "Beijing Jiaotong University" | All_SS$Institutions.3.1 == "Beijing Jiaotong University" |
+                      All_SS$Institutions.4 == "Beijing Jiaotong University" | All_SS$Institutions.5 == "Beijing Jiaotong University" | All_SS$Institutions.6 == "Beijing Jiaotong University" | All_SS$Institutions.7 == "Beijing Jiaotong University"
+                    | All_SS$Institutions.8 == "Beijing Jiaotong University" | All_SS$Institutions.9 == "Beijing Jiaotong University" | All_SS$Institutions.10 == "Beijing Jiaotong University" | All_SS$Institutions.11 == "Beijing Jiaotong University"
+                    | All_SS$Institutions.12 == "Beijing Jiaotong University" | All_SS$Institutions.13 == "Beijing Jiaotong University" | All_SS$Institutions.14 == "Beijing Jiaotong University" | All_SS$Institutions.15 == "Beijing Jiaotong University"
+                    | All_SS$Institutions.16 == "Beijing Jiaotong University" | All_SS$Institutions.17 == "Beijing Jiaotong University" | All_SS$Institutions.18 == "Beijing Jiaotong University" ,]
+write.csv(SS_Beijing, file = "SS_Beijing.csv",)
+
+#University of Queensland
+SS_UQ = All_SS[All_SS$Institutions.1 == "Beijing Jiaotong University" | All_SS$Institutions.2 == "Beijing Jiaotong University" | All_SS$Institutions.3 == "Beijing Jiaotong University" | All_SS$Institutions.3.1 == "Beijing Jiaotong University" |
+                      All_SS$Institutions.4 == "Beijing Jiaotong University" | All_SS$Institutions.5 == "Beijing Jiaotong University" | All_SS$Institutions.6 == "Beijing Jiaotong University" | All_SS$Institutions.7 == "Beijing Jiaotong University"
+                    | All_SS$Institutions.8 == "Beijing Jiaotong University" | All_SS$Institutions.9 == "Beijing Jiaotong University" | All_SS$Institutions.10 == "Beijing Jiaotong University" | All_SS$Institutions.11 == "Beijing Jiaotong University"
+                    | All_SS$Institutions.12 == "Beijing Jiaotong University" | All_SS$Institutions.13 == "Beijing Jiaotong University" | All_SS$Institutions.14 == "Beijing Jiaotong University" | All_SS$Institutions.15 == "Beijing Jiaotong University"
+                    | All_SS$Institutions.16 == "Beijing Jiaotong University" | All_SS$Institutions.17 == "Beijing Jiaotong University" | All_SS$Institutions.18 == "Beijing Jiaotong University" ,]
+write.csv(SS_UQ, file = "SS_UQ.csv",)
+
+#University of Sydney
+SS_US = All_SS[All_SS$Institutions.1 == "University of Sydney" | All_SS$Institutions.2 == "University of Sydney" | All_SS$Institutions.3 == "University of Sydney" | All_SS$Institutions.3.1 == "University of Sydney" |
+                 All_SS$Institutions.4 == "University of Sydney" | All_SS$Institutions.5 == "University of Sydney" | All_SS$Institutions.6 == "University of Sydney" | All_SS$Institutions.7 == "University of Sydney"
+               | All_SS$Institutions.8 == "University of Sydney" | All_SS$Institutions.9 == "University of Sydney" | All_SS$Institutions.10 == "University of Sydney" | All_SS$Institutions.11 == "University of Sydney"
+               | All_SS$Institutions.12 == "University of Sydney" | All_SS$Institutions.13 == "University of Sydney" | All_SS$Institutions.14 == "University of Sydney" | All_SS$Institutions.15 == "University of Sydney"
+               | All_SS$Institutions.16 == "University of Sydney" | All_SS$Institutions.17 == "University of Sydney" | All_SS$Institutions.18 == "University of Sydney" ,]
+write.csv(SS_US, file = "SS_USyd.csv",)
+
+
+###SS Countries
+
+#USA
+SS_USA = All_SS[All_SS$country1 == "United States"|All_SS$country2 == "United States"|All_SS$country3 == "United States" |All_SS$country4 == "United States" |All_SS$country5 == "United States" 
+                    |All_SS$country6 == "United States" |All_SS$country7 == "United States" |All_SS$country8 == "United States" |All_SS$country9 == "United States",]
+write.csv(SS_USA, file = "SS_USA.csv",)
+#Australia
+SS_AUS = All_SS[All_SS$country1 == "Australia"|All_SS$country2 == "Australia"|All_SS$country3 == "Australia" |All_SS$country4 == "Australia" |All_SS$country5 == "Australia" 
+                |All_SS$country6 == "Australia" |All_SS$country7 == "Australia" |All_SS$country8 == "Australia" |All_SS$country9 == "Australia",]
+write.csv(SS_AUS, file = "SS_AUS.csv",)
+#Netherlands
+SS_Net = All_SS[All_SS$country1 == "Netherlands"|All_SS$country2 == "Netherlands"|All_SS$country3 == "Netherlands" |All_SS$country4 == "Netherlands" |All_SS$country5 == "Netherlands" 
+                |All_SS$country6 == "Netherlands" |All_SS$country7 == "Netherlands" |All_SS$country8 == "Netherlands" |All_SS$country9 == "Netherlands",]
+write.csv(SS_Net, file = "SS_Net.csv",)
+#Canada
+SS_Canada = All_SS[All_SS$country1 == "Canada"|All_SS$country2 == "Canada"|All_SS$country3 == "Canada" |All_SS$country4 == "Canada" |All_SS$country5 == "Canada" 
+                |All_SS$country6 == "Canada" |All_SS$country7 == "Canada" |All_SS$country8 == "Canada" |All_SS$country9 == "Canada",]
+write.csv(SS_Canada, file = "SS_Canada.csv",)
+#Germany
+SS_Germany = All_SS[All_SS$country1 == "Germany"|All_SS$country2 == "Germany"|All_SS$country3 == "Germany" |All_SS$country4 == "Germany" |All_SS$country5 == "Germany" 
+                   |All_SS$country6 == "Germany" |All_SS$country7 == "Germany" |All_SS$country8 == "Germany" |All_SS$country9 == "Germany",]
+write.csv(SS_Germany, file = "SS_Germany.csv",)
+
